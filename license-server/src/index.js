@@ -22,6 +22,8 @@ export default {
 
     try {
       switch (url.pathname) {
+        case '/create-checkout':
+          return handleCreateCheckout(request, env);
         case '/webhook':
           return handleWebhook(request, env);
         case '/success':
@@ -41,6 +43,50 @@ export default {
     }
   },
 };
+
+// ─── POST /create-checkout ───
+// Creates a Stripe Checkout Session with proper success_url
+async function handleCreateCheckout(request, env) {
+  if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
+
+  let promo = '';
+  try {
+    const body = await request.json();
+    promo = body.promo || '';
+  } catch {}
+
+  const params = new URLSearchParams({
+    'mode': 'payment',
+    'success_url': 'https://api.tryhush.app/success?session_id={CHECKOUT_SESSION_ID}',
+    'cancel_url': 'https://tryhush.app',
+    'line_items[0][price]': env.STRIPE_PRICE_ID,
+    'line_items[0][quantity]': '1',
+    'allow_promotion_codes': 'true',
+  });
+
+  if (promo) {
+    // If a specific promo code is provided, use it
+    params.delete('allow_promotion_codes');
+    params.append('discounts[0][promotion_code]', promo);
+  }
+
+  const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params.toString(),
+  });
+
+  const session = await res.json();
+
+  if (session.error) {
+    return json({ error: session.error.message }, 400, CORS_HEADERS);
+  }
+
+  return json({ url: session.url }, 200, CORS_HEADERS);
+}
 
 // ─── POST /webhook ───
 // Stripe sends checkout.session.completed
@@ -128,36 +174,11 @@ async function handleSuccess(request, env) {
       <p style="color:#6e6e73; margin-bottom:32px;">
         Activation en cours... Retour vers Hush.
       </p>
-      <p id="fallback" style="display:none; color:#6e6e73; font-size:14px;">
-        Si Hush ne s'ouvre pas automatiquement,
-        <a href="hush://activate?session_id=${sessionId}" style="color:#0071e3;">cliquez ici</a>.
-      </p>
-      <div id="manual" style="display:none; margin-top:32px;">
-        <p style="color:#6e6e73; font-size:14px; margin-bottom:12px;">
-          Ou copiez ce code dans Hush &rarr; Param&egrave;tres &rarr; Licence :
-        </p>
-        <div style="background:#f5f5f7; border-radius:12px; padding:20px; font-family:monospace; font-size:13px; word-break:break-all; margin-bottom:16px; border:1px solid #e5e5e7;">
-          ${sessionId}
-        </div>
-        <button onclick="navigator.clipboard.writeText('${sessionId}').then(()=>{this.textContent='Copié ✓';this.style.background='#34c759'})"
-          style="background:#0071e3; color:white; border:none; padding:14px 32px; border-radius:980px; font-size:16px; font-weight:600; cursor:pointer; transition:all 0.2s;">
-          Copier le code
-        </button>
-      </div>
       ${email ? `<p style="color:#6e6e73; font-size:14px; margin-top:24px;">Confirmation envoy&eacute;e &agrave; ${email}</p>` : ''}
       <script>
-        // Auto-redirect via deep link
         setTimeout(function() {
           window.location.href = 'hush://activate?session_id=${sessionId}';
         }, 1500);
-        // Show fallback after 4s
-        setTimeout(function() {
-          document.getElementById('fallback').style.display = 'block';
-        }, 4000);
-        // Show manual copy after 8s
-        setTimeout(function() {
-          document.getElementById('manual').style.display = 'block';
-        }, 8000);
       </script>
     </div>
   `);
@@ -239,10 +260,9 @@ async function handleValidate(request, env) {
   return json({ valid: true, email: license.email }, 200, CORS_HEADERS);
 }
 
-// ─── JWT (Ed25519) ───
-// ED25519_PRIVATE_KEY is stored as base64 in Worker secret
+// ─── JWT (HMAC-SHA256) ───
 async function generateJWT(license, hardwareId, env) {
-  const header = base64url(JSON.stringify({ alg: 'EdDSA', typ: 'JWT' }));
+  const header = base64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const payload = base64url(JSON.stringify({
     sid: license.session_id,
     email: license.email,
@@ -252,18 +272,17 @@ async function generateJWT(license, hardwareId, env) {
   }));
 
   const data = `${header}.${payload}`;
+  const secret = env.JWT_SECRET || env.ED25519_PRIVATE_KEY;
 
-  // Import Ed25519 private key
-  const privateKeyBytes = Uint8Array.from(atob(env.ED25519_PRIVATE_KEY), c => c.charCodeAt(0));
   const key = await crypto.subtle.importKey(
     'raw',
-    privateKeyBytes,
-    { name: 'Ed25519' },
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign']
   );
 
-  const sig = await crypto.subtle.sign('Ed25519', key, new TextEncoder().encode(data));
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
   const signature = arrayToBase64url(new Uint8Array(sig));
 
   return `${data}.${signature}`;
@@ -273,27 +292,23 @@ async function verifyJWT(token, env) {
   try {
     const [header, payload, signature] = token.split('.');
     const data = `${header}.${payload}`;
+    const secret = env.JWT_SECRET || env.ED25519_PRIVATE_KEY;
 
-    // Import Ed25519 public key (derived from private key)
-    const privateKeyBytes = Uint8Array.from(atob(env.ED25519_PRIVATE_KEY), c => c.charCodeAt(0));
-    const privateKey = await crypto.subtle.importKey(
+    const key = await crypto.subtle.importKey(
       'raw',
-      privateKeyBytes,
-      { name: 'Ed25519' },
-      true,
+      new TextEncoder().encode(secret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
       ['sign']
     );
-    // Export to get public key via PKCS8 → re-import is complex, so just re-sign and compare
-    // Instead, store public key separately or verify by re-signing
-    // Simpler: use the private key to verify on server side by re-generating the signature
-    const expectedSig = await crypto.subtle.sign('Ed25519', privateKey, new TextEncoder().encode(data));
+
+    const expectedSig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
     const expectedB64 = arrayToBase64url(new Uint8Array(expectedSig));
 
     if (expectedB64 !== signature) return null;
 
     const decoded = JSON.parse(base64urlDecode(payload));
 
-    // Check expiration
     if (decoded.exp && decoded.exp < Math.floor(Date.now() / 1000)) {
       return null;
     }

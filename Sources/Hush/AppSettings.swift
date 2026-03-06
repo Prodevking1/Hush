@@ -25,13 +25,7 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(customPrompt, forKey: "customPrompt") }
     }
 
-    @Published var apiKey: String {
-        didSet {
-            let _ = KeychainHelper.saveString(key: "openRouterApiKey", value: apiKey)
-            // Clean up old UserDefaults storage
-            UserDefaults.standard.removeObject(forKey: "openRouterApiKey")
-        }
-    }
+    @Published var apiKey: String
 
     @Published var useLocalModel: Bool {
         didSet { UserDefaults.standard.set(useLocalModel, forKey: "useLocalModel") }
@@ -41,7 +35,9 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding") }
     }
 
-    @Published var correctionCount: Int = 0
+    @Published var correctionCount: Int {
+        didSet { UserDefaults.standard.set(correctionCount, forKey: "correctionCount") }
+    }
 
     /// Whether the app is currently in trial mode (computed from LicenseManager).
     var isTrialMode: Bool {
@@ -51,14 +47,17 @@ final class AppSettings: ObservableObject {
         return false
     }
 
-    static let defaultCustomPrompt = """
-    You are a helpful text assistant. Detect the language of the input text automatically. \
-    Return ONLY the modified text, with no explanations, no notes, no prefix, no quotes. \
-    Preserve the original language.
-    """
+    static let defaultCustomPrompt = ""
 
-    /// Bundled API key — set your own OpenRouter key here or configure in Keychain.
-    private static let bundledApiKey = ""
+    /// Bundled API key — XOR-obfuscated to avoid plain text in binary.
+    /// See SETUP.md for instructions on encoding your own OpenRouter API key.
+    private static let bundledApiKey: String = {
+        let encoded: [UInt8] = [
+            // Paste your XOR-0x5A encoded key here — see SETUP.md
+        ]
+        if encoded.isEmpty { return "" }
+        return String(encoded.map { Character(UnicodeScalar($0 ^ 0x5A)) })
+    }()
 
     private init() {
         let savedMode = UserDefaults.standard.string(forKey: "correctionMode") ?? CorrectionMode.correction.rawValue
@@ -67,21 +66,11 @@ final class AppSettings: ObservableObject {
         self.isActive = UserDefaults.standard.object(forKey: "isActive") as? Bool ?? true
         self.minimumWordCount = UserDefaults.standard.object(forKey: "minimumWordCount") as? Int ?? 4
         self.customPrompt = UserDefaults.standard.string(forKey: "customPrompt") ?? Self.defaultCustomPrompt
-        // Migrate API key from UserDefaults to Keychain if needed
-        if let legacyKey = UserDefaults.standard.string(forKey: "openRouterApiKey"), !legacyKey.isEmpty {
-            let _ = KeychainHelper.saveString(key: "openRouterApiKey", value: legacyKey)
-            UserDefaults.standard.removeObject(forKey: "openRouterApiKey")
-            self.apiKey = legacyKey
-        } else {
-            let stored = KeychainHelper.readString(key: "openRouterApiKey") ?? ""
-            if stored.isEmpty {
-                // Provision bundled key on first launch
-                let _ = KeychainHelper.saveString(key: "openRouterApiKey", value: Self.bundledApiKey)
-                self.apiKey = Self.bundledApiKey
-            } else {
-                self.apiKey = stored
-            }
-        }
+        // API key: always use bundled XOR-decoded key — no Keychain needed
+        self.apiKey = Self.bundledApiKey
+        // Clean up any legacy Keychain/UserDefaults API key storage
+        UserDefaults.standard.removeObject(forKey: "openRouterApiKey")
+        self.correctionCount = UserDefaults.standard.integer(forKey: "correctionCount")
         self.useLocalModel = UserDefaults.standard.object(forKey: "useLocalModel") as? Bool ?? false
         self.hasCompletedOnboarding = UserDefaults.standard.object(forKey: "hasCompletedOnboarding") as? Bool ?? false
     }

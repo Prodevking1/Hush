@@ -18,7 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         Log.info("========================================")
-        Log.info("  Hush starting up")
         Log.info("  Mode: \(settings.currentMode.icon) \(settings.currentMode.label)")
         Log.info("  Clipboard backup: enabled")
         Log.info("========================================")
@@ -36,10 +35,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             LSSetDefaultHandlerForURLScheme("hush" as CFString, bundleId as CFString)
         }
 
-        // Validate license on launch
-        licenseManager.validate()
-        Log.info("  License: \(licenseManager.stateDescription)")
-
         // Set app icon from bundled resource
         if let iconURL = Bundle.module.url(forResource: "AppIcon", withExtension: "icns"),
            let iconImage = NSImage(contentsOf: iconURL) {
@@ -49,9 +44,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         observeSettings()
 
         if !settings.hasCompletedOnboarding {
-            // Show onboarding first — menu bar and monitoring start after onboarding completes
+            // Show onboarding first — no Keychain access until onboarding completes
             onboardingController.show()
         } else {
+            // Already onboarded — hide from Dock, run as menu bar app
+            NSApp.setActivationPolicy(.accessory)
+            // Validate license only after onboarding (avoids Keychain popup on first launch)
+            licenseManager.validate()
+            Log.info("  License: \(licenseManager.stateDescription)")
             setupMenuBar()
             startAfterOnboarding()
         }
@@ -91,6 +91,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Ensure menu bar is set up (first time after onboarding)
         if statusItem == nil {
             setupMenuBar()
+        }
+        // Validate license (Keychain access happens here, after onboarding)
+        if licenseManager.licenseState == .unknown {
+            licenseManager.validate()
         }
         switch licenseManager.licenseState {
         case .valid, .trial:
@@ -150,20 +154,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .dropFirst()
             .filter { $0 == true }
             .sink { [weak self] _ in
+                NSApp.setActivationPolicy(.accessory)
                 self?.startAfterOnboarding()
             }
             .store(in: &cancellables)
 
-        // Observe license state changes to show/dismiss paywall
+        // Observe license state changes to show/dismiss paywall and rebuild menu
         licenseManager.$licenseState
             .dropFirst()
             .sink { [weak self] state in
+                self?.rebuildMenu()
                 switch state {
                 case .valid:
                     self?.paywallController.dismiss()
                     self?.startMonitoring()
                 case .trial:
-                    break // Continue normally
+                    self?.startMonitoring()
                 case .expired, .unlicensed:
                     self?.keystrokeMonitor?.stop()
                     self?.showPaywall()
@@ -253,6 +259,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         paramItem.target = self
         menu.addItem(paramItem)
 
+        // Reset license (dev)
+        let resetItem = NSMenuItem(
+            title: "R\u{00e9}initialiser la licence",
+            action: #selector(resetLicenseData),
+            keyEquivalent: ""
+        )
+        resetItem.target = self
+        menu.addItem(resetItem)
+
+        // Expire trial (dev)
+        let expireItem = NSMenuItem(
+            title: "Terminer l\u{2019}essai (dev)",
+            action: #selector(expireTrialNow),
+            keyEquivalent: ""
+        )
+        expireItem.target = self
+        menu.addItem(expireItem)
+
+        menu.addItem(NSMenuItem.separator())
+
         // Quit
         menu.addItem(NSMenuItem(title: "Quitter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 
@@ -269,6 +295,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         settingsController.show()
     }
 
+    @objc private func resetLicenseData() {
+        // Clear all license-related keychain data
+        KeychainHelper.delete(key: "hush_license_jwt")
+        KeychainHelper.delete(key: "hush_install_date")
+        KeychainHelper.delete(key: "hush_last_online_validation")
+
+        // Reset onboarding
+        settings.hasCompletedOnboarding = false
+
+        // Re-validate (will start fresh trial)
+        licenseManager.validate()
+        rebuildMenu()
+
+        Log.info("License data reset — restarting onboarding")
+        onboardingController.show()
+    }
+
+    @objc private func expireTrialNow() {
+        // Set install date to 8 days ago to simulate expired trial
+        let eightDaysAgo = Date().addingTimeInterval(-8 * 24 * 3600)
+        KeychainHelper.saveDate(key: "hush_install_date", date: eightDaysAgo)
+        licenseManager.validate()
+        rebuildMenu()
+        Log.info("Trial expired (dev) — install date set to 8 days ago")
+    }
+
     // MARK: - Monitoring
 
     private func startMonitoring() {
@@ -276,9 +328,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if keystrokeMonitor != nil { return }
 
         if !AXIsProcessTrusted() {
-            Log.warn("Accessibility permission not granted — requesting...")
-            let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
-            AXIsProcessTrustedWithOptions(options)
+            Log.warn("Accessibility permission not granted — enable in System Settings > Privacy > Accessibility")
         }
 
         keystrokeMonitor = KeystrokeMonitor(pauseDelay: settings.pauseDelay) { [weak self] in

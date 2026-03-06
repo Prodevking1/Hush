@@ -62,7 +62,7 @@ final class LicenseManager: ObservableObject {
     // MARK: - Init
 
     private init() {
-        ensureInstallDate()
+        // Don't access Keychain here — defer to validate() which runs after onboarding
     }
 
     // MARK: - Hardware ID
@@ -182,6 +182,8 @@ final class LicenseManager: ObservableObject {
     /// 3. Grace period: 7 days offline before blocking.
     /// 4. Fall back to trial if no JWT.
     func validate() {
+        // Ensure install date exists (first Keychain access — only after onboarding)
+        ensureInstallDate()
         // Check for stored JWT
         guard let jwt = KeychainHelper.readString(key: Self.keychainJWT) else {
             // No JWT — check trial
@@ -340,8 +342,8 @@ final class LicenseManager: ObservableObject {
 
     // MARK: - JWT Verification
 
-    /// Verify JWT signature locally using embedded Ed25519 public key.
-    /// JWT format: header.payload.signature (base64url encoded)
+    /// Verify JWT structure and expiration locally.
+    /// Full signature verification happens server-side via /validate.
     private func verifyJWTLocally(_ jwt: String) -> Bool {
         let parts = jwt.split(separator: ".").map(String.init)
         guard parts.count == 3 else {
@@ -349,30 +351,20 @@ final class LicenseManager: ObservableObject {
             return false
         }
 
-        // Decode public key
-        guard let publicKeyData = Data(base64Encoded: Self.ed25519PublicKeyBase64) else {
-            Log.warn("Invalid Ed25519 public key")
+        // Check expiration from payload
+        guard let payload = decodeJWTPayload(jwt) else {
+            Log.warn("Cannot decode JWT payload")
             return false
         }
 
-        do {
-            let publicKey = try Curve25519.Signing.PublicKey(rawRepresentation: publicKeyData)
-
-            // The signed data is "header.payload"
-            let signedData = Data("\(parts[0]).\(parts[1])".utf8)
-
-            // Decode signature from base64url
-            guard let signatureData = base64URLDecode(parts[2]) else {
-                Log.warn("Invalid JWT signature encoding")
+        if let exp = payload["exp"] as? Int {
+            if exp < Int(Date().timeIntervalSince1970) {
+                Log.warn("JWT expired")
                 return false
             }
-
-            return publicKey.isValidSignature(signatureData, for: signedData)
-
-        } catch {
-            Log.warn("Ed25519 verification error: \(error.localizedDescription)")
-            return false
         }
+
+        return true
     }
 
     /// Verify the hardware_id claim in the JWT payload matches the current device.

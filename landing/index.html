@@ -1337,7 +1337,7 @@
                     <h1 class="fade-in">Vous <span id="hero-word1" class="hero-typo">tap&eacute;</span>.<br>Hush <span id="hero-word2" class="hero-perfect">perfectionne<span id="hero-sparkle" class="hero-sparkle">&#x2728;</span></span>.</h1>
                     <p class="subtitle fade-in">Ne pensez plus aux fautes. Concentrez-vous sur ce que vous avez &agrave; dire.</p>
                     <div class="cta-group fade-in">
-                        <a href="#pricing" class="btn-primary">Essayer gratuitement</a>
+                        <a href="javascript:void(0)" class="btn-primary cta-download" onclick="startDownloadAndPopup(event)">Essayer gratuitement</a>
                         <span class="meta" style="display:block; margin-top:8px; font-size:13px; color:var(--text-secondary);">7 jours &mdash; pas de carte requise</span>
                         <span class="meta">macOS 13+</span>
                     </div>
@@ -1626,7 +1626,7 @@
                     <li><span class="check">&#x2713;</span> Mises &agrave; jour incluses</li>
                     <li><span class="check">&#x2713;</span> Auto-compl&eacute;tion IA (bient&ocirc;t)</li>
                 </ul>
-                <a href="#pricing" class="btn-primary">Commencer l'essai gratuit</a>
+                <a href="javascript:void(0)" class="btn-primary cta-download" onclick="startDownloadAndPopup(event)">Commencer l'essai gratuit</a>
                 <div class="guarantee">
                     <span class="guarantee-icon">&#x1F6E1;&#xFE0F;</span>
                     <p>Garantie satisfait ou rembours&eacute; 30 jours. Sans condition.</p>
@@ -1696,7 +1696,7 @@
             <p class="urgency-badge">&#x1F525; Prix de lancement &mdash; Offre limit&eacute;e</p>
             <h2>24,99&euro; aujourd'hui. Bient&ocirc;t 49,99&euro;.</h2>
             <p class="urgency-sub">Rejoignez les premiers utilisateurs et gardez le prix fondateur &agrave; vie.</p>
-            <a href="#pricing" class="btn-primary">Essayer gratuitement</a>
+            <a href="javascript:void(0)" class="btn-primary cta-download" onclick="startDownloadAndPopup(event)">Essayer gratuitement</a>
             <p style="margin-top:10px; font-size:14px; color:rgba(255,255,255,0.6);">7 jours &mdash; pas de carte requise</p>
             <div class="footer-cta-links">
                 <a href="privacy.html">Confidentialit&eacute;</a>
@@ -1710,6 +1710,236 @@
     <footer>
         <p>&copy; 2026 Hush. Fait avec soin.</p>
     </footer>
+
+    <!-- ═══ Promo Popup ═══ -->
+    <style>
+        .promo-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+        .promo-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .promo-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 24px;
+            max-width: 440px;
+            width: 92%;
+            padding: 0;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 32px 100px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 113, 227, 0.08);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            overflow: hidden;
+        }
+        .promo-overlay.active .promo-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .promo-top {
+            background: linear-gradient(135deg, #0071e3 0%, #004aad 100%);
+            padding: 32px 40px 28px;
+            position: relative;
+        }
+        .promo-top::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 24px 24px 0 0;
+        }
+        .promo-emoji {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .promo-headline {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        .promo-subheadline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+        .promo-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            line-height: 1;
+        }
+        .promo-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        .promo-body {
+            padding: 20px 40px 36px;
+        }
+        .promo-pricing {
+            margin-bottom: 8px;
+        }
+        .promo-price-old {
+            font-size: 18px;
+            color: #aeaeb2;
+            text-decoration: line-through;
+            margin-right: 8px;
+            font-weight: 500;
+        }
+        .promo-price-new {
+            font-size: 52px;
+            font-weight: 800;
+            color: #0071e3;
+            letter-spacing: -0.04em;
+        }
+        .promo-price-label {
+            display: block;
+            font-size: 13px;
+            color: #6e6e73;
+            margin-bottom: 20px;
+        }
+        .promo-perks {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .promo-perk {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+        .promo-perk-icon {
+            font-size: 15px;
+        }
+        .promo-urgency {
+            background: #fff3e0;
+            color: #e65100;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .promo-urgency-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #e65100;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: promo-pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes promo-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .promo-cta {
+            display: block;
+            background: linear-gradient(135deg, #0071e3 0%, #0077ED 100%);
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 16px 36px;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+        }
+        .promo-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
+        }
+        .promo-cta:active {
+            transform: translateY(0);
+        }
+        .promo-dismiss {
+            display: block;
+            font-size: 13px;
+            color: #aeaeb2;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            background: none;
+            margin: 0 auto;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .promo-dismiss:hover {
+            color: #6e6e73;
+        }
+        @media (max-width: 520px) {
+            .promo-card { border-radius: 18px; }
+            .promo-top { padding: 24px 24px 22px; }
+            .promo-top::after { border-radius: 18px 18px 0 0; }
+            .promo-body { padding: 16px 24px 28px; }
+            .promo-headline { font-size: 20px; }
+            .promo-price-new { font-size: 40px; }
+            .promo-perks { flex-direction: column; gap: 8px; align-items: center; }
+            .promo-cta { font-size: 16px; padding: 14px 28px; }
+        }
+    </style>
+
+    <div class="promo-overlay" id="promoOverlay" onclick="closePromoFromOverlay(event)">
+        <div class="promo-card">
+            <div class="promo-top">
+                <button class="promo-close" onclick="closePromo()" aria-label="Fermer">&times;</button>
+                <span class="promo-emoji">&#x1F389;</span>
+                <h3 class="promo-headline">Votre t&eacute;l&eacute;chargement a commenc&eacute; !</h3>
+                <p class="promo-subheadline">En attendant, une offre exclusive pour vous&hellip;</p>
+            </div>
+            <div class="promo-body">
+                <div class="promo-pricing">
+                    <span class="promo-price-old">24,99&euro;</span>
+                    <span class="promo-price-new">12,49&euro;</span>
+                </div>
+                <span class="promo-price-label">Paiement unique &mdash; licence &agrave; vie</span>
+                <div class="promo-perks">
+                    <span class="promo-perk"><span class="promo-perk-icon">&#x2705;</span> 3 Mac</span>
+                    <span class="promo-perk"><span class="promo-perk-icon">&#x267E;&#xFE0F;</span> Mises &agrave; jour &agrave; vie</span>
+                    <span class="promo-perk"><span class="promo-perk-icon">&#x1F6E1;&#xFE0F;</span> 100% priv&eacute;</span>
+                </div>
+                <div class="promo-urgency"><span class="promo-urgency-dot"></span>Limit&eacute; aux 100 premiers. Plus que <strong>69</strong> places &agrave; ce prix</div>
+                <a href="https://buy.stripe.com/14AaEW2M46j9dkb88HbEA03?prefilled_promo_code=HUSHEARLY" class="promo-cta">Verrouiller mon prix &agrave; 12,49&euro;</a>
+                <button class="promo-dismiss" onclick="closePromo()">Non merci, je continue en essai gratuit</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ═══ JavaScript ═══ -->
     <script>
@@ -1907,6 +2137,37 @@
                 }
             }, { threshold: 0.3 });
             demoObserver.observe(heroDemo);
+        });
+
+        // ── Download CTA + Promo Popup ──
+        function startDownloadAndPopup(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Start the DMG download via iframe (avoids page navigation)
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = 'https://tryhush.app/Hush.dmg';
+            document.body.appendChild(iframe);
+            setTimeout(function () { document.body.removeChild(iframe); }, 5000);
+            // Show popup after a short delay
+            setTimeout(function () {
+                var overlay = document.getElementById('promoOverlay');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 1500);
+        }
+        function closePromo() {
+            var overlay = document.getElementById('promoOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function closePromoFromOverlay(e) {
+            if (e.target === e.currentTarget) {
+                closePromo();
+            }
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePromo();
         });
     </script>
 </body>
