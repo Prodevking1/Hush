@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hush — Correction invisible par IA pour Mac</title>
+    <meta name="description" content="Hush corrige automatiquement tout ce que vous tapez sur Mac. Français et anglais. 24,99€ licence à vie.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --blue: #0071e3;
+            --blue-hover: #0077ED;
+            --violet: #7c3aed;
+            --violet-light: #f5f0ff;
+            --card-bg: #f5f5f7;
+            --white: #ffffff;
+            --green: #34c759;
+            --red: #ff3b30;
+            --max-w: 1080px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Layout ── */
+        .container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 120px 0;
+        }
+
+        /* ── Typography ── */
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 44px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        /* ── Buttons ── */
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 36px;
+            background: var(--blue);
+            color: var(--white);
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 980px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-hover);
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* ── Fade-in Animation ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Badge ── */
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--blue);
+            color: var(--white);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 980px;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-violet {
+            background: var(--violet);
+        }
+
+        .badge-lang {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-fr {
+            background: #e8f0fe;
+            color: #1a56db;
+        }
+
+        .badge-en {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* ═══════════════════════════
+           1. HERO
+        ═══════════════════════════ */
+        .hero {
+            padding: 140px 0 100px;
+            text-align: left;
+        }
+
+        .hero-split {
+            display: flex;
+            align-items: center;
+            gap: 56px;
+        }
+
+        .hero-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hero-right {
+            flex: 1.1;
+            min-width: 0;
+            margin-top: 40px;
+        }
+
+        .hero-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            margin-bottom: 16px;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 440px;
+            margin: 0 0 24px;
+        }
+
+        .hero .badge {
+            margin-bottom: 28px;
+        }
+
+        .hero .cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            max-width: fit-content;
+        }
+
+        .hero .meta {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ── Hero Demo Animation ── */
+        .hero-demo {
+            width: 100%;
+            background: var(--white);
+            border-radius: 16px;
+            border: 1px solid #e5e5e7;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .hero-demo-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f5f5f7;
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .hero-demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .hero-demo-dot.red { background: #ff5f57; }
+        .hero-demo-dot.yellow { background: #febc2e; }
+        .hero-demo-dot.green { background: #28c840; }
+
+        .hero-demo-appname {
+            margin-left: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .hero-demo-content {
+            padding: 28px 32px 32px;
+            min-height: 160px;
+            position: relative;
+        }
+
+        .hero-demo-text {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            min-height: 60px;
+        }
+
+        .hero-demo-text .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--blue);
+            margin-left: 1px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .hero-demo-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #f0f0f2;
+        }
+
+        .hero-demo-status-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.4s ease;
+        }
+
+        .hero-demo-status-left .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: background 0.4s ease;
+        }
+
+        .hero-demo-status-left .status-dot.active {
+            background: var(--blue);
+            box-shadow: 0 0 6px rgba(0,113,227,0.4);
+        }
+
+        .hero-demo-status-left .status-dot.done {
+            background: var(--green);
+            box-shadow: 0 0 6px rgba(52,199,89,0.4);
+        }
+
+        .hero-demo-mode {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 3px 10px;
+            background: #f5f5f7;
+            border-radius: 6px;
+        }
+
+        /* ── Hero typo animation ── */
+        .hero-typo {
+            display: inline-block;
+            transition: all 0.4s ease;
+        }
+
+        .hero-typo.error {
+            color: var(--red);
+            text-decoration: underline wavy var(--red);
+            text-underline-offset: 6px;
+            text-decoration-thickness: 2px;
+        }
+
+        .hero-typo.correcting {
+            opacity: 0;
+            transform: translateY(4px);
+            transition: all 0.25s ease;
+        }
+
+        .hero-typo.corrected {
+            color: var(--green);
+            opacity: 1;
+            transform: translateY(0);
+            text-decoration: none;
+            transition: all 0.35s ease;
+        }
+
+        .hero-typo.done {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.8s ease;
+        }
+
+        /* ── Hero "perfectionne" animation ── */
+        .hero-perfect {
+            display: inline-block;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .hero-perfect.reveal {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .hero-perfect.settle {
+            color: inherit;
+            font-weight: 700;
+            transition: color 1s ease;
+        }
+
+        .hero-perfect {
+            position: relative;
+        }
+
+        .hero-sparkle {
+            position: absolute;
+            top: -0.3em;
+            right: -0.7em;
+            opacity: 0;
+            font-size: 0.45em;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .hero-sparkle.show {
+            opacity: 1;
+            animation: sparkle-pop 0.6s ease forwards;
+        }
+
+        .hero-sparkle.fade {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        @keyframes sparkle-pop {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* ── Error highlight ── */
+        .error-word {
+            color: var(--red);
+            text-decoration: underline wavy var(--red);
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1.5px;
+        }
+
+        /* ── Benefits row ── */
+        .hero-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+
+        .hero-benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .hero-benefit-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #f0f5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* ── Modes section ── */
+        .modes {
+            background: var(--white);
+        }
+
+        .modes h2 {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .modes .subtitle {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .mode-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .mode-card .mode-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .mode-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .mode-card p {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* ═══════════════════════════
+           2. PAIN
+        ═══════════════════════════ */
+        .pain {
+            background: var(--white);
+        }
+
+        .pain h2 {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .pain-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .pain-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-align: center;
+        }
+
+        .pain-card .emoji {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .pain-card p {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .pain .transition {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            font-style: italic;
+        }
+
+        /* ═══════════════════════════
+           3. DEMO — Avant/Après
+        ═══════════════════════════ */
+        .demo h2 {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .demo .subtitle {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .demo-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .demo-item {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px 36px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .demo-item .demo-header {
+            margin-bottom: 20px;
+        }
+
+        .demo-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .demo-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .demo-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            min-width: 56px;
+            padding-top: 2px;
+        }
+
+        .demo-label.before {
+            color: var(--red);
+        }
+
+        .demo-label.after {
+            color: var(--green);
+        }
+
+        .demo-text {
+            font-size: 17px;
+            line-height: 1.55;
+        }
+
+        .demo-text.before {
+            text-decoration: line-through;
+            color: #86868b;
+            text-decoration-color: rgba(255, 59, 48, 0.4);
+        }
+
+        .demo-text.after {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* ═══════════════════════════
+           4. HOW IT WORKS
+        ═══════════════════════════ */
+        .how {
+            background: var(--white);
+        }
+
+        .how h2 {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .how-step {
+            text-align: center;
+        }
+
+        .how-step .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .how-step h3 {
+            margin-bottom: 10px;
+        }
+
+        .how-step p {
+            font-size: 16px;
+        }
+
+        .how .mention {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding-top: 16px;
+            border-top: 1px solid #e5e5e7;
+        }
+
+        /* ═══════════════════════════
+           5. TRUST
+        ═══════════════════════════ */
+        .trust {
+            background: var(--card-bg);
+        }
+
+        .trust h2 {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .trust-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .trust-card .emoji {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .trust-card p {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* ═══════════════════════════
+           6. COMING SOON
+        ═══════════════════════════ */
+        .coming-soon {
+            background: var(--violet-light);
+        }
+
+        .coming-soon-inner {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .coming-soon .badge-violet {
+            margin-bottom: 20px;
+        }
+
+        .coming-soon h2 {
+            color: var(--violet);
+            margin-bottom: 16px;
+        }
+
+        .coming-soon p {
+            font-size: 19px;
+            color: #4c1d95;
+            line-height: 1.6;
+        }
+
+        .coming-soon .sparkle {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        /* ═══════════════════════════
+           7. PRICING
+        ═══════════════════════════ */
+        .pricing h2 {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .pricing-card {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            border: 2px solid #e5e5e7;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .pricing-card .price {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .pricing-card .price-sub {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .pricing-list {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 36px;
+        }
+
+        .pricing-list li {
+            font-size: 16px;
+            padding: 8px 0;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-list li .check {
+            color: var(--green);
+            font-size: 18px;
+        }
+
+        .pricing-compare {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e5e7;
+        }
+
+        .pricing-compare strong {
+            color: var(--text);
+        }
+
+        /* ═══════════════════════════
+           8. FAQ
+        ═══════════════════════════ */
+        .faq {
+            background: var(--white);
+        }
+
+        .faq h2 {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .faq-list {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            font-family: inherit;
+            gap: 16px;
+        }
+
+        .faq-question:hover {
+            color: var(--blue);
+        }
+
+        .faq-question .arrow {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.open .faq-question .arrow {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            padding-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        /* ═══════════════════════════
+           9. FOOTER CTA
+        ═══════════════════════════ */
+        .footer-cta {
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg) 0%, #eef2ff 100%);
+        }
+
+        .footer-cta h2 {
+            margin-bottom: 28px;
+        }
+
+        .footer-cta .btn-primary {
+            margin-bottom: 32px;
+        }
+
+        .footer-cta-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-cta-links a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-cta-links a:hover {
+            color: var(--blue);
+        }
+
+        /* ═══════════════════════════
+           10. FOOTER
+        ═══════════════════════════ */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            background: var(--bg);
+        }
+
+        footer p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ═══════════════════════════
+           TESTIMONIALS
+        ═══════════════════════════ */
+        .testimonials h2 {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-stars {
+            color: #f5a623;
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .testimonial-avatar.purple { background: var(--violet); }
+        .testimonial-avatar.blue { background: var(--blue); }
+        .testimonial-avatar.green { background: #10b981; }
+
+        .testimonial-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .testimonial-title {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ═══════════════════════════
+           HOW — SVG Icons & Connectors
+        ═══════════════════════════ */
+        .how-step .step-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2ff;
+            border-radius: 50%;
+        }
+
+        .how-step .step-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--blue);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Step 1: Bounce */
+        @keyframes subtleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .how-step:nth-child(1) .step-icon svg {
+            animation: subtleBounce 2s ease-in-out infinite;
+        }
+
+        /* Step 2: Pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .how-step:nth-child(2) .step-icon {
+            position: relative;
+        }
+
+        .how-step:nth-child(2) .step-icon::before {
+            content: '';
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid var(--blue);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        /* Step 3: Checkmark draw */
+        @keyframes drawCheck {
+            0% { stroke-dashoffset: 30; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .how-step:nth-child(3) .step-icon .check-path {
+            stroke-dasharray: 30;
+            stroke-dashoffset: 30;
+        }
+
+        .how-step:nth-child(3).visible .step-icon .check-path {
+            animation: drawCheck 0.8s ease forwards 0.3s;
+        }
+
+        /* Connector lines between steps */
+        .how-steps {
+            position: relative;
+        }
+
+        .how-step {
+            position: relative;
+        }
+
+        .how-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: calc(50% + 44px);
+            width: calc(100% - 40px);
+            border-top: 2px dashed #e5e5e7;
+        }
+
+        /* ═══════════════════════════
+           GUARANTEE
+        ═══════════════════════════ */
+        .guarantee {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 16px;
+        }
+
+        .guarantee-icon {
+            font-size: 20px;
+        }
+
+        .guarantee p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ═══════════════════════════
+           URGENCY (Footer CTA)
+        ═══════════════════════════ */
+        .urgency-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ff6b35, #ff3b30);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 980px;
+            margin-bottom: 20px;
+        }
+
+        .urgency-sub {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-top: -8px;
+            margin-bottom: 28px;
+        }
+
+        /* ═══════════════════════════
+           WAITLIST (Email Capture)
+        ═══════════════════════════ */
+        .waitlist {
+            background: linear-gradient(135deg, #f5f0ff 0%, #eef2ff 50%, #faf5ff 100%);
+        }
+
+        .waitlist-inner {
+            text-align: center;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .waitlist-inner .badge-violet {
+            margin-bottom: 20px;
+        }
+
+        .waitlist-inner h2 {
+            color: var(--violet);
+            margin-bottom: 12px;
+        }
+
+        .waitlist-inner > p {
+            font-size: 18px;
+            color: #4c1d95;
+            margin-bottom: 32px;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .waitlist-input {
+            flex: 1;
+            max-width: 320px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 1px solid #d4d4d8;
+            border-radius: 980px;
+            background: var(--white);
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .waitlist-input:focus {
+            border-color: var(--violet);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+        }
+
+        .waitlist-input::placeholder {
+            color: #a1a1aa;
+        }
+
+        .waitlist-btn {
+            background: var(--violet);
+            white-space: nowrap;
+        }
+
+        .waitlist-btn:hover {
+            background: #6d28d9;
+        }
+
+        .waitlist-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ═══════════════════════════
+           RESPONSIVE
+        ═══════════════════════════ */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 30px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            section {
+                padding: 80px 0;
+            }
+
+            .hero {
+                padding: 120px 0 80px;
+            }
+
+            .hero-split {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-left {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hero .cta-group {
+                align-items: center;
+            }
+
+            .hero .subtitle {
+                font-size: 18px;
+                margin: 0 auto 24px;
+            }
+
+            .hero-benefits {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .modes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .modes-grid .mode-card:last-child {
+                grid-column: span 2;
+            }
+
+            .pain-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .demo-item {
+                padding: 24px 20px;
+            }
+
+            .demo-row {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .how-steps {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card {
+                padding: 36px 24px;
+            }
+
+            .pricing-card .price {
+                font-size: 48px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .how-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .waitlist-form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .waitlist-input {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .footer-cta-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            section {
+                padding: 64px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ 1. HERO ═══ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-split">
+                <div class="hero-left">
+                    <img src="icon.png" alt="Hush" class="hero-icon fade-in">
+                    <h1 class="fade-in">Vous <span id="hero-word1" class="hero-typo">tap&eacute;</span>.<br>Hush <span id="hero-word2" class="hero-perfect">perfectionne<span id="hero-sparkle" class="hero-sparkle">&#x2728;</span></span>.</h1>
+                    <p class="subtitle fade-in">Ne pensez plus aux fautes. Concentrez-vous sur ce que vous avez &agrave; dire.</p>
+                    <div class="cta-group fade-in">
+                        <a href="#pricing" class="btn-primary">Essayer gratuitement</a>
+                        <span class="meta" style="display:block; margin-top:8px; font-size:13px; color:var(--text-secondary);">7 jours &mdash; pas de carte requise</span>
+                        <span class="meta">macOS 13+</span>
+                    </div>
+                </div>
+                <div class="hero-right fade-in">
+                    <div class="hero-demo">
+                        <div class="hero-demo-titlebar">
+                            <span class="hero-demo-dot red"></span>
+                            <span class="hero-demo-dot yellow"></span>
+                            <span class="hero-demo-dot green"></span>
+                            <span class="hero-demo-appname" id="demo-appname">Mail</span>
+                        </div>
+                        <div class="hero-demo-content">
+                            <div class="hero-demo-text" id="demo-text"><span class="cursor"></span></div>
+                            <div class="hero-demo-status">
+                                <div class="hero-demo-status-left">
+                                    <span class="status-dot" id="demo-dot"></span>
+                                    <span id="demo-status">En attente&hellip;</span>
+                                </div>
+                                <span class="hero-demo-mode" id="demo-mode">Correction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="hero-benefits fade-in">
+                <div class="hero-benefit">
+                    <span class="hero-benefit-icon">&#x26A1;</span>
+                    <span>&Eacute;crivez sans vous soucier des fautes</span>
+                </div>
+                <div class="hero-benefit">
+                    <span class="hero-benefit-icon">&#x23F1;</span>
+                    <span>Ne relisez plus jamais vos textes</span>
+                </div>
+                <div class="hero-benefit">
+                    <span class="hero-benefit-icon">&#x1F30D;</span>
+                    <span>Fran&ccedil;ais &amp; anglais d&eacute;tect&eacute;s</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ MODES ═══ -->
+    <section class="modes">
+        <div class="container">
+            <h2 class="fade-in">5 modes pour chaque situation</h2>
+            <p class="subtitle fade-in">Correction, reformulation, ou votre propre style &mdash; Hush s&rsquo;adapte.</p>
+            <div class="modes-grid">
+                <div class="mode-card fade-in">
+                    <span class="mode-icon">&#x270F;&#xFE0F;</span>
+                    <h3>Correction</h3>
+                    <p>Corrige les fautes sans changer votre style</p>
+                </div>
+                <div class="mode-card fade-in">
+                    <span class="mode-icon">&#x1F454;</span>
+                    <h3>Professionnel</h3>
+                    <p>Reformulation formelle pour emails et documents</p>
+                </div>
+                <div class="mode-card fade-in">
+                    <span class="mode-icon">&#x1F60A;</span>
+                    <h3>D&eacute;contract&eacute;</h3>
+                    <p>Ton naturel et friendly pour vos messages</p>
+                </div>
+                <div class="mode-card fade-in">
+                    <span class="mode-icon">&#x2702;&#xFE0F;</span>
+                    <h3>Concis</h3>
+                    <p>Va droit au but, supprime le superflu</p>
+                </div>
+                <div class="mode-card fade-in">
+                    <span class="mode-icon">&#x2728;</span>
+                    <h3>Personnalis&eacute;</h3>
+                    <p>Personnalisez la correction &agrave; votre image</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 2. PAIN ═══ -->
+    <section class="pain">
+        <div class="container">
+            <h2 class="fade-in">&Eacute;crire ne devrait pas &ecirc;tre stressant.</h2>
+            <div class="pain-cards">
+                <div class="pain-card fade-in">
+                    <span class="emoji">&#x1F9E0;</span>
+                    <p>La charge mentale de v&eacute;rifier chaque mot, chaque accord, chaque accent</p>
+                </div>
+                <div class="pain-card fade-in">
+                    <span class="emoji">&#x23F3;</span>
+                    <p>Le temps perdu &agrave; chercher les accents, relire, corriger, re-relire</p>
+                </div>
+                <div class="pain-card fade-in">
+                    <span class="emoji">&#x1F612;</span>
+                    <p>L'h&eacute;sitation permanente entre &laquo;&nbsp;&eacute;&nbsp;&raquo;, &laquo;&nbsp;&egrave;&nbsp;&raquo;, &laquo;&nbsp;&ecirc;&nbsp;&raquo; et &laquo;&nbsp;er&nbsp;&raquo; ou &laquo;&nbsp;&eacute;&nbsp;&raquo;</p>
+                </div>
+            </div>
+            <p class="transition fade-in">Et si vous n'y pensiez plus jamais ?</p>
+        </div>
+    </section>
+
+    <!-- ═══ 3. DEMO ═══ -->
+    <section class="demo">
+        <div class="container">
+            <h2 class="fade-in">Le r&eacute;sultat, en un coup d'&oelig;il</h2>
+            <p class="subtitle fade-in">Fran&ccedil;ais ou anglais, Hush d&eacute;tecte la langue et corrige.</p>
+            <div class="demo-examples">
+                <div class="demo-item fade-in">
+                    <div class="demo-header">
+                        <span class="badge-lang badge-fr">FR</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label before">Avant</span>
+                        <span class="demo-text before">je vous envoi le document des que possible</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label after">Apr&egrave;s</span>
+                        <span class="demo-text after">Je vous envoie le document d&egrave;s que possible.</span>
+                    </div>
+                </div>
+                <div class="demo-item fade-in">
+                    <div class="demo-header">
+                        <span class="badge-lang badge-en">EN</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label before">Avant</span>
+                        <span class="demo-text before">i wanted to inform you that the deployement is sheduled for wenesday</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label after">Apr&egrave;s</span>
+                        <span class="demo-text after">I wanted to inform you that the deployment is scheduled for Wednesday.</span>
+                    </div>
+                </div>
+                <div class="demo-item fade-in">
+                    <div class="demo-header">
+                        <span class="badge-lang badge-fr">FR</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label before">Avant</span>
+                        <span class="demo-text before">merci bcp pr votre retour rapide c cool</span>
+                    </div>
+                    <div class="demo-row">
+                        <span class="demo-label after">Apr&egrave;s</span>
+                        <span class="demo-text after">Merci beaucoup pour votre retour rapide, c'est super.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TESTIMONIALS ═══ -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="fade-in">Ils l'utilisent d&eacute;j&agrave;</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">&laquo;&nbsp;Je r&eacute;dige 50+ emails par jour. Depuis Hush, je ne relis plus rien. Mes coll&egrave;gues pensent que j'ai toujours &eacute;t&eacute; irr&eacute;prochable.&nbsp;&raquo;</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar purple">ML</div>
+                        <div>
+                            <div class="testimonial-name">Marie L.</div>
+                            <div class="testimonial-title">Responsable communication</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">&laquo;&nbsp;J'&eacute;cris en fran&ccedil;ais et en anglais toute la journ&eacute;e. Hush corrige les deux sans que je fasse quoi que ce soit. Magique.&nbsp;&raquo;</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar blue">TK</div>
+                        <div>
+                            <div class="testimonial-name">Thomas K.</div>
+                            <div class="testimonial-title">D&eacute;veloppeur freelance</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">&laquo;&nbsp;Mes dissertations &eacute;taient pleines de coquilles. Maintenant je me concentre sur le fond, Hush g&egrave;re la forme.&nbsp;&raquo;</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar green">SM</div>
+                        <div>
+                            <div class="testimonial-name">Sarah M.</div>
+                            <div class="testimonial-title">&Eacute;tudiante en droit</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 4. HOW IT WORKS ═══ -->
+    <section class="how">
+        <div class="container">
+            <h2 class="fade-in">Comment &ccedil;a marche</h2>
+            <div class="how-steps">
+                <div class="how-step fade-in">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="14" width="20" height="8" rx="2" />
+                            <line x1="6" y1="18" x2="18" y2="18" />
+                            <rect x="5" y="4" width="14" height="10" rx="1" />
+                            <line x1="8" y1="7" x2="16" y2="7" />
+                            <line x1="8" y1="10" x2="13" y2="10" />
+                        </svg>
+                    </div>
+                    <h3>Tapez normalement</h3>
+                    <p>Dans n'importe quelle app : Mail, Slack, Chrome, Notes&hellip;</p>
+                </div>
+                <div class="how-step fade-in">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3" />
+                            <circle cx="12" cy="12" r="7" opacity="0.5" />
+                            <circle cx="12" cy="12" r="11" opacity="0.25" />
+                        </svg>
+                    </div>
+                    <h3>Hush d&eacute;tecte votre pause</h3>
+                    <p>Apr&egrave;s quelques secondes de silence, Hush analyse votre texte.</p>
+                </div>
+                <div class="how-step fade-in">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" />
+                            <path class="check-path" d="M7 12.5l3.5 3.5 6.5-7" />
+                        </svg>
+                    </div>
+                    <h3>Votre texte est perfectionn&eacute;</h3>
+                    <p>La correction appara&icirc;t instantan&eacute;ment. Vous ne remarquez rien.</p>
+                </div>
+            </div>
+            <p class="mention fade-in">Pas d'extension. Pas de copier-coller. &Ccedil;a marche partout.</p>
+        </div>
+    </section>
+
+    <!-- ═══ 5. TRUST ═══ -->
+    <section class="trust">
+        <div class="container">
+            <h2 class="fade-in">Vos donn&eacute;es, notre responsabilit&eacute;</h2>
+            <div class="trust-grid">
+                <div class="trust-card fade-in">
+                    <span class="emoji">&#x1F512;</span>
+                    <p>Vos textes transitent chiffr&eacute;s (HTTPS) via OpenRouter. Politique de <strong>z&eacute;ro r&eacute;tention de donn&eacute;es</strong> par d&eacute;faut.</p>
+                </div>
+                <div class="trust-card fade-in">
+                    <span class="emoji">&#x1F1EA;&#x1F1FA;</span>
+                    <p>Le mod&egrave;le Ministral 3B est h&eacute;berg&eacute; en <strong>Europe</strong>, conforme aux normes GDPR. Aucun entra&icirc;nement sur vos textes.</p>
+                </div>
+                <div class="trust-card fade-in">
+                    <span class="emoji">&#x1F4CB;</span>
+                    <p>L&rsquo;original est copi&eacute; dans votre <strong>presse-papiers</strong> avant chaque correction. Cmd+V pour revenir en arri&egrave;re.</p>
+                </div>
+                <div class="trust-card fade-in">
+                    <span class="emoji">&#x1F4BB;</span>
+                    <p>Option mod&egrave;le local &mdash; vos donn&eacute;es ne quittent <strong>jamais</strong> votre Mac. Z&eacute;ro connexion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 6. WAITLIST ═══ -->
+    <section class="waitlist">
+        <div class="container">
+            <div class="waitlist-inner fade-in">
+                <span class="badge badge-violet">Bient&ocirc;t</span>
+                <h2>Auto-compl&eacute;tion intelligente</h2>
+                <p>Hush apprend votre style et compl&egrave;te vos phrases en temps r&eacute;el. Gagnez des heures chaque semaine.</p>
+                <p class="waitlist-meta">Acc&egrave;s prioritaire pour les utilisateurs Hush Pro.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 7. PRICING ═══ -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="fade-in">Un prix simple. Pour toujours.</h2>
+            <div class="pricing-card fade-in">
+                <div class="price">24,99&euro;</div>
+                <p class="price-sub">Paiement unique &mdash; licence &agrave; vie</p>
+                <ul class="pricing-list">
+                    <li><span class="check">&#x2713;</span> 7 jours d'essai gratuit</li>
+                    <li><span class="check">&#x2713;</span> Fran&ccedil;ais &amp; anglais</li>
+                    <li><span class="check">&#x2713;</span> Fonctionne dans toutes vos apps</li>
+                    <li><span class="check">&#x2713;</span> Jusqu'&agrave; 3 Mac</li>
+                    <li><span class="check">&#x2713;</span> Mises &agrave; jour incluses</li>
+                    <li><span class="check">&#x2713;</span> Auto-compl&eacute;tion IA (bient&ocirc;t)</li>
+                </ul>
+                <a href="#pricing" class="btn-primary">Commencer l'essai gratuit</a>
+                <div class="guarantee">
+                    <span class="guarantee-icon">&#x1F6E1;&#xFE0F;</span>
+                    <p>Garantie satisfait ou rembours&eacute; 30 jours. Sans condition.</p>
+                </div>
+                <p class="pricing-compare">Grammarly = 144&euro;/an. <strong>Hush = 24,99&euro;. Pour toujours.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 8. FAQ ═══ -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="fade-in">Questions fr&eacute;quentes</h2>
+            <div class="faq-list">
+                <div class="faq-item fade-in">
+                    <button class="faq-question">
+                        <span>Mes donn&eacute;es sont-elles en s&eacute;curit&eacute; ?</span>
+                        <span class="arrow">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Oui. Vos textes transitent chiffr&eacute;s (HTTPS) via OpenRouter, qui applique une politique de z&eacute;ro r&eacute;tention de donn&eacute;es par d&eacute;faut &mdash; vos textes ne sont ni stock&eacute;s, ni utilis&eacute;s pour l&rsquo;entra&icirc;nement. Le mod&egrave;le Ministral 3B est h&eacute;berg&eacute; en Europe sous les normes GDPR. Hush ne poss&egrave;de aucun serveur. Pour une confidentialit&eacute; absolue, activez le mod&egrave;le local : vos donn&eacute;es ne quittent jamais votre Mac.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <button class="faq-question">
+                        <span>&Ccedil;a marche dans quelles apps ?</span>
+                        <span class="arrow">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Partout o&ugrave; vous tapez : Mail, Notes, Slack, Chrome, Safari, Pages, Word, et des centaines d'autres. Hush utilise l'accessibilit&eacute; macOS pour lire et corriger les champs de texte.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <button class="faq-question">
+                        <span>Et si je change de Mac ?</span>
+                        <span class="arrow">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Votre licence fonctionne sur jusqu'&agrave; 3 appareils. D&eacute;sactivez un ancien Mac pour en activer un nouveau.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <button class="faq-question">
+                        <span>C'est quoi la diff&eacute;rence avec Grammarly ?</span>
+                        <span class="arrow">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Grammarly est une extension navigateur &agrave; 144&euro;/an. Hush est une app native macOS invisible qui corrige partout, automatiquement, pour 24,99&euro; une seule fois.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <button class="faq-question">
+                        <span>Quelles langues sont support&eacute;es ?</span>
+                        <span class="arrow">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Fran&ccedil;ais et anglais pour le moment. Hush d&eacute;tecte automatiquement la langue de votre texte.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 9. FOOTER CTA ═══ -->
+    <section class="footer-cta">
+        <div class="container fade-in">
+            <p class="urgency-badge">&#x1F525; Prix de lancement &mdash; Offre limit&eacute;e</p>
+            <h2>24,99&euro; aujourd'hui. Bient&ocirc;t 49,99&euro;.</h2>
+            <p class="urgency-sub">Rejoignez les premiers utilisateurs et gardez le prix fondateur &agrave; vie.</p>
+            <a href="#pricing" class="btn-primary">Essayer gratuitement</a>
+            <p style="margin-top:10px; font-size:14px; color:rgba(255,255,255,0.6);">7 jours &mdash; pas de carte requise</p>
+            <div class="footer-cta-links">
+                <a href="privacy.html">Confidentialit&eacute;</a>
+                <a href="terms.html">CGU</a>
+                <a href="mailto:abdoul@appbiz.studio">Contact</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ 10. FOOTER ═══ -->
+    <footer>
+        <p>&copy; 2026 Hush. Fait avec soin.</p>
+    </footer>
+
+    <!-- ═══ JavaScript ═══ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ── Fade-in Observer ──
+            var fadeEls = document.querySelectorAll('.fade-in');
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+                fadeEls.forEach(function (el) { observer.observe(el); });
+            } else {
+                fadeEls.forEach(function (el) { el.classList.add('visible'); });
+            }
+
+            // ── FAQ Accordion ──
+            var faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(function (item) {
+                var btn = item.querySelector('.faq-question');
+                btn.addEventListener('click', function () {
+                    var isOpen = item.classList.contains('open');
+                    faqItems.forEach(function (i) { i.classList.remove('open'); });
+                    if (!isOpen) item.classList.add('open');
+                });
+            });
+
+            // ── Hero Interactive Demo ──
+            var scenarios = [
+                {
+                    app: 'Mail',
+                    mode: 'Correction',
+                    before: 'je vous envoi le document des que possible, n\u2019hesitez pas a me contacter si besoin',
+                    after: 'Je vous envoie le document d\u00e8s que possible, n\u2019h\u00e9sitez pas \u00e0 me contacter si besoin.',
+                    errors: ['envoi', 'des que', 'hesitez', ' a me']
+                },
+                {
+                    app: 'Slack',
+                    mode: 'Professionnel',
+                    before: 'on a eu un soucis avec le deploy, sa a impacter les users pendant 2h',
+                    after: 'Nous avons rencontr\u00e9 un probl\u00e8me lors du d\u00e9ploiement, ce qui a impact\u00e9 les utilisateurs pendant deux heures.',
+                    errors: ['soucis', 'sa a', 'impacter']
+                },
+                {
+                    app: 'Chrome',
+                    mode: 'Correction',
+                    before: 'i wanted to inform you that the deployement is sheduled for wenesday morning',
+                    after: 'I wanted to inform you that the deployment is scheduled for Wednesday morning.',
+                    errors: ['deployement', 'sheduled', 'wenesday']
+                },
+                {
+                    app: 'Notes',
+                    mode: 'Concis',
+                    before: 'je pense que potentiellement il serait peut etre envisageable de reporter la reunion a la semaine prochaine',
+                    after: 'Je propose de reporter la r\u00e9union \u00e0 la semaine prochaine.',
+                    errors: ['potentiellement', 'peut etre', 'envisageable', 'reunion', ' a la']
+                }
+            ];
+
+            var demoText = document.getElementById('demo-text');
+            var demoDot = document.getElementById('demo-dot');
+            var demoStatus = document.getElementById('demo-status');
+            var demoMode = document.getElementById('demo-mode');
+            var demoAppname = document.getElementById('demo-appname');
+            var scenarioIndex = 0;
+
+            function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+            async function typeText(text, el) {
+                var speed = 28;
+                for (var i = 0; i < text.length; i++) {
+                    el.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+                    await sleep(speed + Math.random() * 20);
+                }
+            }
+
+            function highlightErrors(text, errors, el) {
+                var html = text;
+                errors.forEach(function(err) {
+                    html = html.replace(err, '<span class="error-word">' + err + '</span>');
+                });
+                el.innerHTML = html;
+            }
+
+            async function replaceText(before, after, el) {
+                // Fade out old text
+                el.style.transition = 'opacity 0.3s ease';
+                el.style.opacity = '0.4';
+                await sleep(350);
+
+                // Show corrected text with green flash
+                el.innerHTML = after;
+                el.style.color = '#34c759';
+                el.style.opacity = '1';
+                await sleep(800);
+
+                // Back to normal color
+                el.style.transition = 'color 0.6s ease';
+                el.style.color = '#1d1d1f';
+            }
+
+            async function runScenario(s) {
+                // Setup
+                demoAppname.textContent = s.app;
+                demoMode.textContent = s.mode;
+                demoText.innerHTML = '<span class="cursor"></span>';
+                demoText.style.opacity = '1';
+                demoText.style.color = '#1d1d1f';
+                demoDot.className = 'status-dot';
+                demoStatus.textContent = 'En attente\u2026';
+
+                await sleep(600);
+
+                // Phase 1: Typing
+                demoDot.className = 'status-dot';
+                demoStatus.textContent = 'Vous tapez\u2026';
+                await typeText(s.before, demoText);
+
+                // Phase 2: Pause detected — highlight errors in red
+                await sleep(800);
+                demoDot.className = 'status-dot active';
+                demoStatus.textContent = 'Pause d\u00e9tect\u00e9e\u2026';
+                highlightErrors(s.before, s.errors, demoText);
+                await sleep(1200);
+
+                // Phase 3: Correcting
+                demoStatus.textContent = 'Correction en cours\u2026';
+                await sleep(700);
+
+                // Phase 4: Replace
+                await replaceText(s.before, s.after, demoText);
+                demoDot.className = 'status-dot done';
+                demoStatus.textContent = 'Corrig\u00e9 \u2713';
+
+                await sleep(2500);
+            }
+
+            async function demoLoop() {
+                while (true) {
+                    await runScenario(scenarios[scenarioIndex]);
+                    scenarioIndex = (scenarioIndex + 1) % scenarios.length;
+                    await sleep(500);
+                }
+            }
+
+            // ── Hero headline typo correction animation ──
+            async function animateHeadline() {
+                var word1 = document.getElementById('hero-word1');
+                var word2 = document.getElementById('hero-word2');
+                var sparkle = document.getElementById('hero-sparkle');
+
+                await sleep(1500);
+
+                // Step 1: "perfectionne" goes bold green + sparkle
+                word2.classList.add('reveal');
+                await sleep(300);
+                sparkle.classList.add('show');
+
+                await sleep(800);
+
+                // Step 2: "tapé" gets red underline (error detected)
+                word1.classList.add('error');
+                await sleep(1000);
+
+                // Step 3: Correct "tapé" → "tapez"
+                word1.classList.remove('error');
+                word1.classList.add('correcting');
+                await sleep(280);
+                word1.textContent = 'tapez';
+                word1.classList.remove('correcting');
+                word1.classList.add('corrected');
+
+                await sleep(2000);
+
+                // Settle back to normal
+                word1.classList.remove('corrected');
+                word1.classList.add('done');
+                word2.classList.remove('reveal');
+                word2.classList.add('settle');
+                sparkle.classList.remove('show');
+                sparkle.classList.add('fade');
+            }
+            animateHeadline();
+
+            // Start demo when hero is visible
+            var heroDemo = document.querySelector('.hero-demo');
+            var demoObserver = new IntersectionObserver(function (entries) {
+                if (entries[0].isIntersecting) {
+                    demoObserver.unobserve(heroDemo);
+                    setTimeout(function() { demoLoop(); }, 800);
+                }
+            }, { threshold: 0.3 });
+            demoObserver.observe(heroDemo);
+        });
+    </script>
+</body>
+</html>

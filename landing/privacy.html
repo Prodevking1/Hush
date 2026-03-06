@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialit&eacute; &mdash; Hush</title>
+    <meta name="description" content="Politique de confidentialit&eacute; de Hush, application macOS de correction automatique par IA.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --blue: #0071e3;
+            --blue-hover: #0077ED;
+            --violet: #7c3aed;
+            --violet-light: #f5f0ff;
+            --card-bg: #f5f5f7;
+            --white: #ffffff;
+            --green: #34c759;
+            --red: #ff3b30;
+            --max-w: 800px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── Navigation ── */
+        .nav-bar {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e5e7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .nav-bar a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-bar a:hover {
+            color: var(--blue-hover);
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text) !important;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Header ── */
+        .legal-header {
+            padding: 80px 0 48px;
+            text-align: center;
+        }
+
+        .legal-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .legal-header .subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        /* ── Content ── */
+        .legal-content {
+            padding-bottom: 100px;
+        }
+
+        .legal-content h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-top: 56px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--card-bg);
+        }
+
+        .legal-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .legal-content p {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.75;
+        }
+
+        .legal-content ul, .legal-content ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .legal-content li {
+            font-size: 16px;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .legal-content a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .legal-content strong {
+            font-weight: 600;
+        }
+
+        /* ── Table ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e5e7;
+        }
+
+        .data-table thead {
+            background: var(--card-bg);
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f2;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ── Highlight Box ── */
+        .highlight-box {
+            background: #edf7ed;
+            border: 1px solid #c3e6c3;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            color: #1a5c1a;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .highlight-box ul {
+            margin-top: 12px;
+            margin-bottom: 0;
+        }
+
+        .highlight-box li {
+            color: #1a5c1a;
+            font-size: 15px;
+        }
+
+        .info-box {
+            background: var(--violet-light);
+            border: 1px solid #ddd6fe;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .info-box p {
+            color: #5b21b6;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        /* ── Footer ── */
+        .legal-footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid #e5e5e7;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .legal-footer a {
+            color: var(--blue);
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+        .legal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .legal-header h1 {
+                font-size: 30px;
+            }
+
+            .legal-content h2 {
+                font-size: 22px;
+            }
+
+            .data-table {
+                font-size: 13px;
+            }
+
+            .data-table th, .data-table td {
+                padding: 10px 12px;
+            }
+
+            .nav-bar {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .data-table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .data-table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navigation ── -->
+    <nav class="nav-bar">
+        <a href="https://tryhush.app" class="nav-logo">Hush</a>
+        <div>
+            <a href="terms.html" style="margin-right: 20px;">CGU</a>
+            <a href="https://tryhush.app">&larr; Retour au site</a>
+        </div>
+    </nav>
+
+    <!-- ── Header ── -->
+    <div class="container">
+        <div class="legal-header">
+            <h1>Politique de Confidentialit&eacute;</h1>
+            <p class="subtitle">Derni&egrave;re mise &agrave; jour : 1er mars 2026</p>
+        </div>
+
+        <!-- ── Content ── -->
+        <div class="legal-content">
+
+            <!-- 1. Introduction -->
+            <h2>1. Introduction</h2>
+            <p>
+                La pr&eacute;sente politique de confidentialit&eacute; d&eacute;crit comment <strong>Hush</strong>,
+                application macOS de correction automatique de texte par intelligence artificielle, &eacute;dit&eacute;e par
+                <strong>AppBiz Studio</strong>, collecte, utilise et prot&egrave;ge vos donn&eacute;es personnelles.
+            </p>
+            <p>
+                Hush est con&ccedil;u selon un principe de <strong>minimisation des donn&eacute;es</strong> : nous ne collectons
+                que le strict n&eacute;cessaire au fonctionnement du service et &agrave; la gestion des licences. Aucune donn&eacute;e
+                n'est vendue, partag&eacute;e &agrave; des fins publicitaires ou exploit&eacute;e commercialement.
+            </p>
+            <p>
+                Cette politique est conforme au <strong>R&egrave;glement G&eacute;n&eacute;ral sur la Protection des
+                Donn&eacute;es (RGPD &mdash; R&egrave;glement UE 2016/679)</strong> et &agrave; la
+                <strong>Loi Informatique et Libert&eacute;s</strong> (loi n&deg; 78-17 du 6 janvier 1978 modifi&eacute;e).
+            </p>
+
+            <!-- 2. Responsable du traitement -->
+            <h2>2. Responsable du traitement</h2>
+            <p>
+                <strong>AppBiz Studio</strong><br>
+                Contact : <a href="mailto:abdoul@appbiz.studio">abdoul@appbiz.studio</a><br>
+                Site web : <a href="https://tryhush.app" target="_blank" rel="noopener">tryhush.app</a>
+            </p>
+            <p>
+                Pour toute question relative &agrave; la protection de vos donn&eacute;es ou pour exercer vos droits,
+                vous pouvez nous contacter &agrave; l'adresse ci-dessus.
+            </p>
+
+            <!-- 3. Données collectées -->
+            <h2>3. Donn&eacute;es collect&eacute;es et trait&eacute;es</h2>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Donn&eacute;e</th>
+                            <th>Finalit&eacute;</th>
+                            <th>Base l&eacute;gale</th>
+                            <th>Dur&eacute;e de conservation</th>
+                            <th>Lieu de traitement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Texte du champ actif</strong></td>
+                            <td>Envoy&eacute; au mod&egrave;le IA pour correction orthographique et grammaticale</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td><strong>Aucune conservation</strong> &mdash; transit uniquement (Zero Data Retention)</td>
+                            <td>France/UE (Mistral AI via OpenRouter)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identifiant mat&eacute;riel (Hardware ID)</strong></td>
+                            <td>Lier la licence &agrave; l'appareil (max 3 appareils par licence)</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td>Dur&eacute;e de la licence</td>
+                            <td>Cloudflare (r&eacute;seau global, chiffr&eacute;)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adresse e-mail</strong></td>
+                            <td>Identification de la licence, communication de service</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td>Dur&eacute;e de la licence</td>
+                            <td>Cloudflare KV + Stripe</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identifiant de session Stripe</strong></td>
+                            <td>Association paiement &harr; licence</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td>Dur&eacute;e de la licence</td>
+                            <td>Cloudflare KV</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jeton JWT (licence)</strong></td>
+                            <td>Authentification locale de la licence</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td>Stock&eacute; localement dans le Keychain macOS</td>
+                            <td>Appareil local uniquement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cl&eacute; API OpenRouter</strong></td>
+                            <td>Authentification aupr&egrave;s de l'API de correction</td>
+                            <td>Ex&eacute;cution du contrat (art. 6.1.b RGPD)</td>
+                            <td>Stock&eacute;e localement (UserDefaults)</td>
+                            <td>Appareil local uniquement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pr&eacute;f&eacute;rences utilisateur</strong></td>
+                            <td>Mode de correction, d&eacute;lai de pause, prompt personnalis&eacute;</td>
+                            <td>Int&eacute;r&ecirc;t l&eacute;gitime (art. 6.1.f RGPD)</td>
+                            <td>Stock&eacute;es localement (UserDefaults)</td>
+                            <td>Appareil local uniquement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3.1 Détails techniques sur le traitement du texte -->
+            <h3>3.1. Traitement du texte &mdash; fonctionnement d&eacute;taill&eacute;</h3>
+            <p>
+                Lorsque vous tapez du texte et marquez une pause, Hush lit le contenu du champ de texte actif
+                via l'<strong>Accessibility API de macOS</strong> (AXUIElement). Ce texte est ensuite :
+            </p>
+            <ol>
+                <li><strong>Copi&eacute; dans le presse-papiers</strong> comme sauvegarde (donn&eacute;e locale uniquement).</li>
+                <li><strong>Envoy&eacute; via HTTPS</strong> (chiffrement TLS) &agrave; l'API OpenRouter, qui le transmet au mod&egrave;le
+                    <strong>Ministral 3B</strong> de Mistral AI, h&eacute;berg&eacute; en <strong>France/Union europ&eacute;enne</strong>.</li>
+                <li>Le texte corrig&eacute; est renvoy&eacute; et <strong>ins&eacute;r&eacute; dans le champ</strong> en remplacement du texte original.</li>
+            </ol>
+
+            <div class="highlight-box">
+                <p><strong>Politique Zero Data Retention (ZDR)</strong></p>
+                <ul>
+                    <li>OpenRouter applique une politique de <strong>Zero Data Retention</strong> par d&eacute;faut : aucun texte n'est stock&eacute;, journalis&eacute; ou utilis&eacute; pour l'entra&icirc;nement de mod&egrave;les.</li>
+                    <li>Mistral AI ne conserve pas les donn&eacute;es transmises via ses API.</li>
+                    <li>Hush lui-m&ecirc;me <strong>ne stocke, ne journalise et ne conserve aucun texte</strong> envoy&eacute; &agrave; l'API.</li>
+                </ul>
+            </div>
+
+            <h3>3.2. Identifiant mat&eacute;riel (Hardware ID)</h3>
+            <p>
+                Pour lier votre licence &agrave; votre appareil, Hush g&eacute;n&egrave;re un <strong>identifiant mat&eacute;riel</strong>
+                calcul&eacute; comme suit : un hash <strong>SHA-256</strong> de la combinaison
+                <code>IOPlatformSerialNumber</code> + <code>IOPlatformUUID</code> de votre Mac.
+            </p>
+            <p>
+                Ce hash est <strong>irr&eacute;versible</strong> : il est impossible de retrouver votre num&eacute;ro de s&eacute;rie
+                ou votre UUID &agrave; partir de cet identifiant. Il est transmis au serveur de licences lors de l'activation
+                et de la revalidation p&eacute;riodique (toutes les 72 heures).
+            </p>
+
+            <h3>3.3. Jeton de licence (JWT)</h3>
+            <p>
+                Apr&egrave;s activation, un jeton JWT contenant votre identifiant de session, votre adresse e-mail et
+                votre identifiant mat&eacute;riel est stock&eacute; dans le <strong>Keychain macOS</strong>
+                (stockage s&eacute;curis&eacute; chiffr&eacute; par le syst&egrave;me d'exploitation). Ce jeton est v&eacute;rifi&eacute;
+                localement et revalid&eacute; en ligne tous les 72 heures.
+            </p>
+
+            <h3>3.4. Monitoring clavier (KeystrokeMonitor)</h3>
+            <p>
+                Hush utilise un syst&egrave;me de surveillance des &eacute;v&eacute;nements clavier (<code>CGEventTap</code>)
+                <strong>uniquement pour d&eacute;tecter les pauses de frappe</strong>. Ce syst&egrave;me :
+            </p>
+            <ul>
+                <li><strong>N'enregistre pas</strong> les touches press&eacute;es.</li>
+                <li><strong>Ne transmet pas</strong> les frappes clavier &agrave; un serveur.</li>
+                <li><strong>Ne stocke aucun historique</strong> de saisie.</li>
+                <li>D&eacute;tecte uniquement le <strong>timing</strong> entre les &eacute;v&eacute;nements pour identifier le moment o&ugrave; vous cessez de taper.</li>
+            </ul>
+
+            <h3>3.5. Accessibility API (macOS)</h3>
+            <p>
+                Hush n&eacute;cessite l'autorisation <strong>Accessibilit&eacute;</strong> de macOS pour :
+            </p>
+            <ul>
+                <li><strong>Lire</strong> le contenu du champ de texte actif au moment de la pause.</li>
+                <li><strong>&Eacute;crire</strong> le texte corrig&eacute; dans ce m&ecirc;me champ.</li>
+            </ul>
+            <p>
+                Hush ne lit que le champ de texte ayant le focus au moment de la pause. Les champs de mots de passe
+                (<code>AXSecureTextField</code>) sont <strong>syst&eacute;matiquement ignor&eacute;s</strong>.
+                Les applications de d&eacute;veloppement (terminaux, &eacute;diteurs de code) sont
+                <strong>exclues par d&eacute;faut</strong>.
+            </p>
+
+            <!-- 4. Données NON collectées -->
+            <h2>4. Donn&eacute;es NON collect&eacute;es</h2>
+            <div class="highlight-box">
+                <p><strong>Hush ne collecte PAS :</strong></p>
+                <ul>
+                    <li>Vos frappes clavier (keylogger) &mdash; seul le timing des pauses est d&eacute;tect&eacute;</li>
+                    <li>L'historique des textes corrig&eacute;s &mdash; aucun stockage, ni local ni distant</li>
+                    <li>Vos donn&eacute;es de navigation ou d'utilisation d'autres applications</li>
+                    <li>Votre localisation g&eacute;ographique</li>
+                    <li>Vos contacts, photos, fichiers ou tout autre contenu personnel</li>
+                    <li>Des donn&eacute;es biom&eacute;triques</li>
+                    <li>Des donn&eacute;es bancaires ou de carte de cr&eacute;dit (g&eacute;r&eacute;es enti&egrave;rement par Stripe)</li>
+                    <li>Des donn&eacute;es de t&eacute;l&eacute;m&eacute;trie, d'analytics ou de tracking</li>
+                    <li>Des cookies &mdash; ni sur l'application ni sur le site web</li>
+                </ul>
+            </div>
+
+            <!-- 5. Sous-traitants -->
+            <h2>5. Sous-traitants et transferts de donn&eacute;es</h2>
+            <p>
+                Hush fait appel aux sous-traitants suivants pour le fonctionnement du service :
+            </p>
+
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Sous-traitant</th>
+                            <th>R&ocirc;le</th>
+                            <th>Donn&eacute;es concern&eacute;es</th>
+                            <th>Localisation</th>
+                            <th>Garanties RGPD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>OpenRouter</strong></td>
+                            <td>Relais API vers le mod&egrave;le IA</td>
+                            <td>Texte en transit (ZDR)</td>
+                            <td>&Eacute;tats-Unis</td>
+                            <td>Zero Data Retention, chiffrement TLS, DPA disponible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mistral AI</strong></td>
+                            <td>Mod&egrave;le d'IA pour la correction (Ministral 3B)</td>
+                            <td>Texte en transit</td>
+                            <td>France / Union europ&eacute;enne</td>
+                            <td>Conforme RGPD, h&eacute;bergement UE, pas de conservation des donn&eacute;es API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cloudflare</strong></td>
+                            <td>H&eacute;bergement serveur de licences (Workers + KV)</td>
+                            <td>Hardware ID (hash&eacute;), e-mail, session ID</td>
+                            <td>R&eacute;seau global (n&oelig;uds UE privil&eacute;gi&eacute;s)</td>
+                            <td>Conforme RGPD, DPA, certifications ISO 27001</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stripe</strong></td>
+                            <td>Traitement des paiements</td>
+                            <td>Donn&eacute;es de paiement (carte, e-mail)</td>
+                            <td>&Eacute;tats-Unis / Union europ&eacute;enne</td>
+                            <td>Conforme RGPD, PCI DSS Level 1, DPA, SCCs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>5.1. Transferts hors UE</h3>
+            <p>
+                Les transferts de donn&eacute;es vers les &Eacute;tats-Unis (OpenRouter, Stripe, Cloudflare) sont
+                encadr&eacute;s par des <strong>Clauses Contractuelles Types (SCCs)</strong> adopt&eacute;es par la
+                Commission europ&eacute;enne, conform&eacute;ment &agrave; l'article 46.2(c) du RGPD.
+            </p>
+            <p>
+                Concernant le traitement du texte sp&eacute;cifiquement, celui-ci est effectu&eacute; par <strong>Mistral AI</strong>,
+                soci&eacute;t&eacute; fran&ccedil;aise dont les serveurs sont situ&eacute;s en <strong>France / Union europ&eacute;enne</strong>.
+                Le texte transite par OpenRouter (USA) mais avec une politique de <strong>Zero Data Retention</strong> :
+                aucune donn&eacute;e n'est stock&eacute;e, journalis&eacute;e ou conserv&eacute;e.
+            </p>
+
+            <!-- 6. Sécurité -->
+            <h2>6. S&eacute;curit&eacute; des donn&eacute;es</h2>
+            <p>
+                Hush met en &oelig;uvre les mesures techniques suivantes pour prot&eacute;ger vos donn&eacute;es :
+            </p>
+            <ul>
+                <li><strong>Chiffrement en transit</strong> : toutes les communications r&eacute;seau utilisent HTTPS/TLS.</li>
+                <li><strong>Stockage s&eacute;curis&eacute;</strong> : le jeton de licence est stock&eacute; dans le Keychain macOS,
+                    chiffr&eacute; par le syst&egrave;me d'exploitation et prot&eacute;g&eacute; par votre session utilisateur.</li>
+                <li><strong>Hash irr&eacute;versible</strong> : l'identifiant mat&eacute;riel est un hash SHA-256 &mdash; impossible
+                    de retrouver les informations d'origine.</li>
+                <li><strong>Zero Data Retention</strong> : aucun texte n'est conserv&eacute; par Hush, OpenRouter ou Mistral AI.</li>
+                <li><strong>Exclusion des champs sensibles</strong> : les champs de mots de passe et les barres d'URL sont
+                    automatiquement ignor&eacute;s.</li>
+                <li><strong>Applications exclues</strong> : les terminaux et &eacute;diteurs de code sont exclus par d&eacute;faut.</li>
+                <li><strong>V&eacute;rification de signature</strong> : les webhooks Stripe sont v&eacute;rifi&eacute;s par signature HMAC.</li>
+            </ul>
+
+            <!-- 7. Droits des utilisateurs -->
+            <h2>7. Vos droits (RGPD)</h2>
+            <p>
+                Conform&eacute;ment au RGPD et &agrave; la Loi Informatique et Libert&eacute;s, vous disposez des droits suivants :
+            </p>
+            <ul>
+                <li><strong>Droit d'acc&egrave;s</strong> (art. 15 RGPD) : obtenir la confirmation que vos donn&eacute;es sont
+                    trait&eacute;es et en recevoir une copie.</li>
+                <li><strong>Droit de rectification</strong> (art. 16 RGPD) : corriger des donn&eacute;es inexactes ou incompl&egrave;tes.</li>
+                <li><strong>Droit &agrave; l'effacement</strong> (art. 17 RGPD) : demander la suppression de vos donn&eacute;es personnelles.</li>
+                <li><strong>Droit &agrave; la limitation du traitement</strong> (art. 18 RGPD) : restreindre le traitement de vos donn&eacute;es.</li>
+                <li><strong>Droit &agrave; la portabilit&eacute;</strong> (art. 20 RGPD) : recevoir vos donn&eacute;es dans un format structur&eacute;.</li>
+                <li><strong>Droit d'opposition</strong> (art. 21 RGPD) : vous opposer au traitement fond&eacute; sur l'int&eacute;r&ecirc;t l&eacute;gitime.</li>
+            </ul>
+            <p>
+                Pour exercer ces droits, contactez-nous &agrave; :
+                <a href="mailto:abdoul@appbiz.studio">abdoul@appbiz.studio</a>.
+                Nous r&eacute;pondrons dans un d&eacute;lai maximum de <strong>30 jours</strong>.
+            </p>
+            <p>
+                Vous disposez &eacute;galement du droit d'introduire une r&eacute;clamation aupr&egrave;s de la
+                <strong>Commission Nationale de l'Informatique et des Libert&eacute;s (CNIL)</strong> :
+                <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.
+            </p>
+
+            <!-- 8. Modèle local -->
+            <h2>8. Mode hors ligne (futur)</h2>
+            <p>
+                Hush pr&eacute;voit l'int&eacute;gration d'un <strong>mod&egrave;le de correction local</strong>, ex&eacute;cut&eacute;
+                enti&egrave;rement sur votre Mac. Lorsque ce mode sera activ&eacute;, <strong>aucune donn&eacute;e ne sera
+                transmise &agrave; un serveur externe</strong>. Le traitement du texte sera r&eacute;alis&eacute; &agrave; 100 % sur votre appareil.
+            </p>
+
+            <!-- 9. Cookies -->
+            <h2>9. Cookies et trackers</h2>
+            <div class="highlight-box">
+                <p>
+                    <strong>Hush n'utilise aucun cookie, aucun tracker, aucun pixel de suivi et aucun outil d'analytics</strong>,
+                    ni dans l'application macOS, ni sur le site web <a href="https://tryhush.app" style="color: #1a5c1a;">tryhush.app</a>.
+                </p>
+            </div>
+
+            <!-- 10. Données des mineurs -->
+            <h2>10. Donn&eacute;es des mineurs</h2>
+            <p>
+                Hush ne s'adresse pas sp&eacute;cifiquement aux mineurs de moins de 16 ans. Si nous apprenons
+                que des donn&eacute;es personnelles d'un mineur ont &eacute;t&eacute; collect&eacute;es sans le consentement
+                d'un parent ou tuteur l&eacute;gal, nous les supprimerons dans les meilleurs d&eacute;lais.
+            </p>
+
+            <!-- 11. Modifications -->
+            <h2>11. Modifications de cette politique</h2>
+            <p>
+                Nous nous r&eacute;servons le droit de modifier cette politique de confidentialit&eacute;. En cas de
+                modification substantielle, nous vous en informerons par une notification dans l'application
+                ou sur notre site web. La date de derni&egrave;re mise &agrave; jour est indiqu&eacute;e en haut de cette page.
+            </p>
+            <p>
+                L'utilisation continu&eacute;e de Hush apr&egrave;s publication d'une version modifi&eacute;e vaut acceptation
+                de la nouvelle politique.
+            </p>
+
+            <!-- 12. Contact -->
+            <h2>12. Contact</h2>
+            <p>
+                Pour toute question relative &agrave; cette politique de confidentialit&eacute; ou au traitement de vos donn&eacute;es :
+            </p>
+            <p>
+                <strong>AppBiz Studio</strong><br>
+                E-mail : <a href="mailto:abdoul@appbiz.studio">abdoul@appbiz.studio</a><br>
+                Site web : <a href="https://tryhush.app" target="_blank" rel="noopener">tryhush.app</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="legal-footer">
+        <p>
+            <a href="https://tryhush.app">Accueil</a>
+            <a href="privacy.html">Confidentialit&eacute;</a>
+            <a href="terms.html">CGU</a>
+        </p>
+        <p style="margin-top: 12px;">&copy; 2026 AppBiz Studio. Tous droits r&eacute;serv&eacute;s.</p>
+    </div>
+
+</body>
+</html>
