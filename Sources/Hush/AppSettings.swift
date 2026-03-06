@@ -57,8 +57,8 @@ final class AppSettings: ObservableObject {
     Preserve the original language.
     """
 
-    /// Bundled API key — provisioned at build time.
-    private static let bundledApiKey = "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"
+    /// Bundled API key — set your own OpenRouter key here or configure in Keychain.
+    private static let bundledApiKey = ""
 
     private init() {
         let savedMode = UserDefaults.standard.string(forKey: "correctionMode") ?? CorrectionMode.correction.rawValue
