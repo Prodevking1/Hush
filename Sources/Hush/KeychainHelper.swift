@@ -3,7 +3,7 @@ import Security
 
 /// Simple helper for reading/writing data in the macOS Keychain.
 enum KeychainHelper {
-    private static let serviceName = "com.hush.app"
+    private static let serviceName = Bundle.main.bundleIdentifier ?? "com.appbiz-studio.hush"
 
     /// Save data to the Keychain for a given key.
     @discardableResult

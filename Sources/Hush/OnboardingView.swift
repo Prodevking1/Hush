@@ -5,56 +5,27 @@ struct OnboardingView: View {
     @State private var currentPage = 0
     @State private var accessibilityGranted = AXIsProcessTrusted()
     @State private var accessibilityTimer: Timer?
+    @State private var trialStarted = false
     var onComplete: () -> Void
 
     private let totalPages = 6
-    private let pageLabels = ["Accueil", "Aperçu", "Vie privée", "Moteur", "Accessibilité", "Prêt"]
 
     var body: some View {
         VStack(spacing: 0) {
-            // Stepper — numbered circles at top
-            HStack(spacing: 0) {
-                ForEach(0..<totalPages, id: \.self) { i in
-                    HStack(spacing: 0) {
-                        VStack(spacing: 4) {
-                            ZStack {
-                                Circle()
-                                    .fill(i <= currentPage ? Color.accentColor : Color.gray.opacity(0.18))
-                                    .frame(width: 26, height: 26)
-                                Text("\(i + 1)")
-                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                    .foregroundColor(i <= currentPage ? .white : .gray)
-                            }
-                            Text(pageLabels[i])
-                                .font(.system(size: 8, weight: i == currentPage ? .semibold : .regular))
-                                .foregroundColor(i == currentPage ? .primary : .secondary)
-                        }
-                        if i < totalPages - 1 {
-                            Rectangle()
-                                .fill(i < currentPage ? Color.accentColor : Color.gray.opacity(0.18))
-                                .frame(height: 2)
-                                .frame(maxWidth: .infinity)
-                                .padding(.bottom, 16)
-                        }
-                    }
+            Group {
+                switch currentPage {
+                case 0: welcomePage
+                case 1: outcomePage
+                case 2: privacyPage
+                case 3: enginePage
+                case 4: accessibilityPage
+                default: setupPage
                 }
             }
-            .padding(.horizontal, 32)
-            .padding(.top, 20)
-            .padding(.bottom, 8)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            TabView(selection: $currentPage) {
-                welcomePage.tag(0)
-                outcomePage.tag(1)
-                privacyPage.tag(2)
-                enginePage.tag(3)
-                accessibilityPage.tag(4)
-                setupPage.tag(5)
-            }
-            .tabViewStyle(.automatic)
-
-            // Navigation bar
-            HStack(spacing: 16) {
+            // Navigation bar — centered
+            HStack(spacing: 12) {
                 if currentPage > 0 {
                     Button("Retour") {
                         withAnimation(.easeInOut(duration: 0.25)) { currentPage -= 1 }
@@ -62,11 +33,7 @@ struct OnboardingView: View {
                     .buttonStyle(.plain)
                     .foregroundColor(.gray)
                     .font(.callout)
-                } else {
-                    Spacer().frame(width: 50)
                 }
-
-                Spacer()
 
                 if currentPage < totalPages - 1 {
                     Button("Suivant") {
@@ -74,19 +41,15 @@ struct OnboardingView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.regular)
-                } else {
+                } else if currentPage == totalPages - 1 && !trialStarted {
                     Button("Commencer l\u{2019}essai gratuit") {
-                        if let url = URL(string: LicenseManager.stripeCheckoutURL) {
-                            NSWorkspace.shared.open(url)
-                        }
-                        settings.hasCompletedOnboarding = true
-                        onComplete()
+                        trialStarted = true
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.regular)
                 }
             }
-            .padding(.horizontal, 28)
+            .frame(maxWidth: .infinity)
             .padding(.bottom, 24)
             .padding(.top, 8)
         }
@@ -164,10 +127,10 @@ struct OnboardingView: View {
             HStack(spacing: 8) {
                 Image(systemName: "sparkle")
                     .font(.system(size: 11))
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(.blue)
                 Text("Bientôt : Auto-complétion intelligente")
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(.blue)
                 Text("— l\u{2019}IA devine et complète vos phrases")
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -175,7 +138,7 @@ struct OnboardingView: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .background(
-                Capsule().fill(Color.purple.opacity(0.08))
+                Capsule().fill(Color.blue.opacity(0.08))
             )
             .padding(.top, 16)
 
@@ -222,10 +185,10 @@ struct OnboardingView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "sparkle")
                         .font(.system(size: 10))
-                        .foregroundStyle(.purple)
+                        .foregroundStyle(.blue)
                     Text("Prochainement")
                         .font(.caption2.bold())
-                        .foregroundStyle(.purple)
+                        .foregroundStyle(.blue)
                 }
                 Text("Auto-complétion intelligente — l\u{2019}IA apprend vos habitudes\nd\u{2019}écriture et complète vos phrases en temps réel.")
                     .font(.caption)
@@ -238,11 +201,11 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(Color.purple.opacity(0.05))
+                    .fill(Color.blue.opacity(0.05))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+                    .stroke(Color.blue.opacity(0.15), lineWidth: 1)
             )
             .padding(.top, 14)
 
@@ -259,7 +222,7 @@ struct OnboardingView: View {
 
             Image(systemName: "lock.shield.fill")
                 .font(.system(size: 40))
-                .foregroundStyle(.green)
+                .foregroundStyle(.blue)
                 .padding(.bottom, 12)
 
             Text("Votre vie privée, notre priorité")
@@ -282,19 +245,19 @@ struct OnboardingView: View {
                 )
                 privacyRow(
                     icon: "xmark.bin.fill",
-                    color: .green,
+                    color: .blue,
                     title: "Rien n\u{2019}est stocké, nulle part",
                     detail: "Ni par Hush, ni par OpenRouter. Votre texte est traité en mémoire puis immédiatement supprimé après correction."
                 )
                 privacyRow(
                     icon: "doc.on.clipboard.fill",
-                    color: .orange,
+                    color: .blue,
                     title: "Filet de sécurité intégré",
                     detail: "L\u{2019}original est copié dans votre presse-papiers avant chaque correction. Cmd+V pour revenir en arrière."
                 )
                 privacyRow(
                     icon: "desktopcomputer",
-                    color: .purple,
+                    color: .blue,
                     title: "Pour plus de confidentialité : le modèle local",
                     detail: "Téléchargez un modèle local et vos données ne quittent jamais votre Mac. Zéro connexion, zéro transit."
                 )
@@ -342,7 +305,7 @@ struct OnboardingView: View {
                     subtitle: "Vos données restent sur votre Mac",
                     detail: "Idéal si la confidentialité absolue est votre priorité.",
                     badge: "Bientôt",
-                    badgeColor: .orange
+                    badgeColor: .gray
                 ) {
                     settings.useLocalModel = true
                 }
@@ -351,11 +314,11 @@ struct OnboardingView: View {
             if settings.useLocalModel {
                 HStack(spacing: 6) {
                     Image(systemName: "info.circle.fill")
-                        .foregroundColor(.orange)
+                        .foregroundColor(.secondary)
                         .font(.caption)
                     Text("Le modèle local arrive dans une prochaine mise à jour. En attendant, le mode Cloud est disponible.")
                         .font(.caption)
-                        .foregroundColor(.orange)
+                        .foregroundColor(.secondary)
                 }
                 .padding(.top, 12)
             }
@@ -373,7 +336,7 @@ struct OnboardingView: View {
 
             Image(systemName: accessibilityGranted ? "checkmark.shield.fill" : "hand.raised.fill")
                 .font(.system(size: 40))
-                .foregroundStyle(accessibilityGranted ? .green : .orange)
+                .foregroundStyle(accessibilityGranted ? .blue : .secondary)
                 .padding(.bottom, 12)
 
             Text(accessibilityGranted ? "Accessibilité activée !" : "Hush a besoin de votre permission")
@@ -388,12 +351,21 @@ struct OnboardingView: View {
                 .padding(.bottom, 24)
 
             if !accessibilityGranted {
-                // Step-by-step guide
-                VStack(alignment: .leading, spacing: 14) {
-                    accessibilityStep(number: "1", text: "Cliquez sur le bouton ci-dessous")
-                    accessibilityStep(number: "2", text: "Dans la liste, trouvez Hush")
-                    accessibilityStep(number: "3", text: "Activez le toggle à côté de Hush")
+                // Reassurance
+                HStack(spacing: 8) {
+                    Image(systemName: "info.circle")
+                        .foregroundStyle(.blue)
+                    Text("Un popup macOS va s\u{2019}afficher pour vous rediriger vers les R\u{00e9}glages.\nC\u{2019}est normal \u{2014} activez simplement Hush dans la liste.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineSpacing(2)
                 }
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(Color.blue.opacity(0.05))
+                )
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
 
@@ -403,20 +375,20 @@ struct OnboardingView: View {
                 }) {
                     HStack(spacing: 8) {
                         Image(systemName: "gear")
-                        Text("Ouvrir les réglages d\u{2019}accessibilité")
+                        Text("Autoriser l\u{2019}accessibilit\u{00e9}")
                     }
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .padding(.bottom, 12)
 
-                Text("Hush détectera automatiquement l\u{2019}activation.")
+                Text("Hush d\u{00e9}tectera automatiquement l\u{2019}activation.")
                     .font(.caption)
                     .foregroundColor(.secondary)
             } else {
                 HStack(spacing: 10) {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(.blue)
                         .font(.title3)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Permission accordée")
@@ -430,11 +402,11 @@ struct OnboardingView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color.green.opacity(0.08))
+                        .fill(Color.blue.opacity(0.08))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(Color.green.opacity(0.2), lineWidth: 1)
+                        .stroke(Color.blue.opacity(0.2), lineWidth: 1)
                 )
             }
 
@@ -449,27 +421,59 @@ struct OnboardingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            Image(systemName: "sparkles")
-                .font(.system(size: 40))
-                .foregroundStyle(.blue)
-                .padding(.bottom, 12)
+            if trialStarted {
+                // Trial activated — confirmation screen
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.blue)
+                    .padding(.bottom, 16)
 
-            Text("Tout est prêt.")
-                .font(.title2.bold())
-                .padding(.bottom, 6)
+                Text("Hush est actif")
+                    .font(.title.bold())
+                    .padding(.bottom, 8)
 
-            Text("Dans quelques secondes, chaque texte que vous\ntaperez sera automatiquement perfectionné.")
-                .font(.callout)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-                .lineSpacing(2)
-                .padding(.bottom, 24)
+                Text("Votre essai gratuit de 7 jours a commenc\u{00e9}.\nHush corrigera automatiquement vos saisies.")
+                    .font(.callout)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+                    .lineSpacing(2)
+                    .padding(.bottom, 28)
 
-            VStack(alignment: .leading, spacing: 10) {
-                checklistRow(done: accessibilityGranted, text: "Accessibilité activée")
-                checklistRow(done: true, text: "Français et anglais détectés automatiquement")
-                checklistRow(done: true, text: "Moteur de correction configuré")
-                checklistRow(done: true, text: "7 jours d\u{2019}essai gratuit inclus")
+                Text("Tapez normalement, Hush s\u{2019}occupe du reste.")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.blue)
+                    .padding(.bottom, 24)
+
+                Button("Fermer") {
+                    settings.hasCompletedOnboarding = true
+                    onComplete()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            } else {
+                // Ready screen — before trial starts
+                Image(systemName: "sparkles")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.blue)
+                    .padding(.bottom, 12)
+
+                Text("Tout est pr\u{00ea}t.")
+                    .font(.title2.bold())
+                    .padding(.bottom, 6)
+
+                Text("Dans quelques secondes, chaque texte que vous\ntaperez sera automatiquement perfectionn\u{00e9}.")
+                    .font(.callout)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+                    .lineSpacing(2)
+                    .padding(.bottom, 24)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    checklistRow(done: accessibilityGranted, text: "Accessibilit\u{00e9} activ\u{00e9}e")
+                    checklistRow(done: true, text: "Fran\u{00e7}ais et anglais d\u{00e9}tect\u{00e9}s automatiquement")
+                    checklistRow(done: true, text: "Moteur de correction configur\u{00e9}")
+                    checklistRow(done: true, text: "7 jours d\u{2019}essai gratuit inclus")
+                }
             }
 
             Spacer()
@@ -509,7 +513,7 @@ struct OnboardingView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 5)
                     .padding(.vertical, 2)
-                    .background(Capsule().fill(lang == "EN" ? Color.blue : Color.indigo))
+                    .background(Capsule().fill(lang == "EN" ? Color.blue : Color.blue))
                 Text(before)
                     .font(.system(.caption, design: .monospaced))
                     .foregroundColor(.secondary)
@@ -518,7 +522,7 @@ struct OnboardingView: View {
             HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "arrow.turn.down.right")
                     .font(.system(size: 9))
-                    .foregroundColor(.green)
+                    .foregroundColor(.blue)
                     .frame(width: 22)
                 Text(after)
                     .font(.system(.caption, design: .monospaced))
@@ -610,7 +614,7 @@ struct OnboardingView: View {
                 .font(.system(size: 13, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
                 .frame(width: 24, height: 24)
-                .background(Circle().fill(Color.orange))
+                .background(Circle().fill(Color.blue))
             Text(text)
                 .font(.callout)
         }
@@ -619,7 +623,7 @@ struct OnboardingView: View {
     private func checklistRow(done: Bool, text: String) -> some View {
         HStack(spacing: 8) {
             Image(systemName: done ? "checkmark.circle.fill" : "circle")
-                .foregroundColor(done ? .green : .gray.opacity(0.4))
+                .foregroundColor(done ? .blue : .gray.opacity(0.4))
                 .font(.system(size: 14))
             Text(text)
                 .font(.callout)
@@ -639,7 +643,12 @@ final class OnboardingWindowController {
             return
         }
 
+        // Temporarily show in Dock so macOS gives us proper focus
+        NSApp.setActivationPolicy(.regular)
+
         let onboardingView = OnboardingView {
+            // Switch back to accessory (no Dock icon) after onboarding
+            NSApp.setActivationPolicy(.accessory)
             self.window?.close()
         }
         let hostingView = NSHostingView(rootView: onboardingView)
@@ -654,9 +663,16 @@ final class OnboardingWindowController {
         newWindow.contentView = hostingView
         newWindow.center()
         newWindow.isReleasedWhenClosed = false
+        newWindow.level = .floating
+        newWindow.orderFrontRegardless()
         newWindow.makeKeyAndOrderFront(nil)
 
         NSApp.activate(ignoringOtherApps: true)
+
+        // Reset level after activation so it doesn't stay always-on-top
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            newWindow.level = .normal
+        }
 
         self.window = newWindow
     }

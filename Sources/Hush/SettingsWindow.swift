@@ -123,7 +123,7 @@ struct SettingsView: View {
                 if settings.customPrompt.count >= 1000 {
                     Text("— limite atteinte")
                         .font(.caption2)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
@@ -222,16 +222,16 @@ struct SettingsView: View {
         switch licenseManager.licenseState {
         case .valid:
             Image(systemName: "checkmark.seal.fill")
-                .foregroundStyle(.green)
+                .foregroundStyle(.blue)
         case .trial:
             Image(systemName: "clock.fill")
                 .foregroundStyle(.blue)
         case .expired:
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.red)
+                .foregroundStyle(.secondary)
         case .unlicensed:
             Image(systemName: "xmark.circle.fill")
-                .foregroundStyle(.red)
+                .foregroundStyle(.secondary)
         case .unknown:
             Image(systemName: "questionmark.circle.fill")
                 .foregroundStyle(.gray)
@@ -245,59 +245,6 @@ struct SettingsView: View {
             VStack(alignment: .leading, spacing: 20) {
                 Text("Paramètres")
                     .font(.title2.bold())
-
-                GroupBox("Moteur IA") {
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Button {
-                                settings.useLocalModel = false
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: settings.useLocalModel ? "circle" : "checkmark.circle.fill")
-                                        .foregroundColor(settings.useLocalModel ? .gray : .blue)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text("Cloud (OpenRouter)")
-                                            .font(.headline)
-                                        Text("Rapide, fiable, requiert une clé API")
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                            }
-                            .buttonStyle(.plain)
-
-                            Spacer()
-
-                            Button {
-                                settings.useLocalModel = true
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: settings.useLocalModel ? "checkmark.circle.fill" : "circle")
-                                        .foregroundColor(settings.useLocalModel ? .blue : .gray)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text("Local")
-                                            .font(.headline)
-                                        Text("Privé, hors-ligne")
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                            }
-                            .buttonStyle(.plain)
-                        }
-
-                        if settings.useLocalModel {
-                            HStack(spacing: 6) {
-                                Image(systemName: "info.circle")
-                                    .foregroundStyle(.orange)
-                                Text("Le modèle local sera disponible prochainement.")
-                                    .font(.caption)
-                                    .foregroundStyle(.orange)
-                            }
-                        }
-                    }
-                    .padding(8)
-                }
 
                 GroupBox("Détection") {
                     VStack(alignment: .leading, spacing: 14) {
@@ -363,10 +310,10 @@ struct SettingsView: View {
                         if settings.useLocalModel {
                             HStack(spacing: 6) {
                                 Image(systemName: "info.circle")
-                                    .foregroundStyle(.orange)
+                                    .foregroundStyle(.secondary)
                                 Text("Le mode local sera disponible prochainement.")
                                     .font(.caption)
-                                    .foregroundStyle(.orange)
+                                    .foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -396,7 +343,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(spacing: 6) {
                             Image(systemName: "lock.shield")
-                                .foregroundStyle(.green)
+                                .foregroundStyle(.blue)
                             Text("Transparence sur vos donn\u{00e9}es")
                                 .font(.headline)
                         }
@@ -423,6 +370,23 @@ struct SettingsView: View {
                     }
                     .padding(8)
                 }
+
+                Divider()
+                    .padding(.vertical, 8)
+
+                Button(action: {
+                    NSApplication.shared.terminate(nil)
+                }) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "power")
+                            .foregroundStyle(.secondary)
+                            .frame(width: 20)
+                        Text("Quitter Hush")
+                            .font(.callout)
+                        Spacer()
+                    }
+                }
+                .buttonStyle(.plain)
             }
             .padding(24)
         }
