@@ -1,0 +1,13 @@
+.build/
+build/
+.DS_Store
+*.xcodeproj
+*.xcworkspace
+.swiftpm/
+Packages/
+DerivedData/
+xcuserdata/
+*.xcscmblueprint
+*.playground
+.wrangler/
+node_modules/

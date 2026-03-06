@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions G&eacute;n&eacute;rales d'Utilisation &mdash; Hush</title>
+    <meta name="description" content="Conditions g&eacute;n&eacute;rales d'utilisation de Hush, application macOS de correction automatique par IA.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --blue: #0071e3;
+            --blue-hover: #0077ED;
+            --violet: #7c3aed;
+            --violet-light: #f5f0ff;
+            --card-bg: #f5f5f7;
+            --white: #ffffff;
+            --green: #34c759;
+            --red: #ff3b30;
+            --max-w: 800px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── Navigation ── */
+        .nav-bar {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e5e7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .nav-bar a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-bar a:hover {
+            color: var(--blue-hover);
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text) !important;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Header ── */
+        .legal-header {
+            padding: 80px 0 48px;
+            text-align: center;
+        }
+
+        .legal-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .legal-header .subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        /* ── Content ── */
+        .legal-content {
+            padding-bottom: 100px;
+        }
+
+        .legal-content h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-top: 56px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--card-bg);
+        }
+
+        .legal-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .legal-content p {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.75;
+        }
+
+        .legal-content ul, .legal-content ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .legal-content li {
+            font-size: 16px;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .legal-content a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .legal-content strong {
+            font-weight: 600;
+        }
+
+        /* ── Highlight Box ── */
+        .highlight-box {
+            background: #edf7ed;
+            border: 1px solid #c3e6c3;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            color: #1a5c1a;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .info-box {
+            background: var(--violet-light);
+            border: 1px solid #ddd6fe;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .info-box p {
+            color: #5b21b6;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .warning-box {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .warning-box p {
+            color: #9a3412;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        /* ── Footer ── */
+        .legal-footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid #e5e5e7;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .legal-footer a {
+            color: var(--blue);
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+        .legal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .legal-header h1 {
+                font-size: 30px;
+            }
+
+            .legal-content h2 {
+                font-size: 22px;
+            }
+
+            .nav-bar {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navigation ── -->
+    <nav class="nav-bar">
+        <a href="https://tryhush.app" class="nav-logo">Hush</a>
+        <div>
+            <a href="privacy.html" style="margin-right: 20px;">Confidentialit&eacute;</a>
+            <a href="https://tryhush.app">&larr; Retour au site</a>
+        </div>
+    </nav>
+
+    <!-- ── Header ── -->
+    <div class="container">
+        <div class="legal-header">
+            <h1>Conditions G&eacute;n&eacute;rales d'Utilisation</h1>
+            <p class="subtitle">Derni&egrave;re mise &agrave; jour : 1er mars 2026</p>
+        </div>
+
+        <!-- ── Content ── -->
+        <div class="legal-content">
+
+            <!-- 1. Objet -->
+            <h2>1. Objet</h2>
+            <p>
+                Les pr&eacute;sentes Conditions G&eacute;n&eacute;rales d'Utilisation (ci-apr&egrave;s &laquo; CGU &raquo;) r&eacute;gissent
+                l'utilisation de l'application <strong>Hush</strong>, application macOS de correction automatique de texte
+                par intelligence artificielle, &eacute;dit&eacute;e par <strong>AppBiz Studio</strong>.
+            </p>
+            <p>
+                Elles d&eacute;finissent les droits et obligations des parties dans le cadre de l'utilisation de l'application
+                et des services associ&eacute;s.
+            </p>
+
+            <!-- 2. Acceptation -->
+            <h2>2. Acceptation des conditions</h2>
+            <p>
+                L'installation, l'utilisation ou l'achat de Hush implique l'acceptation pleine et enti&egrave;re des
+                pr&eacute;sentes CGU. Si vous n'acceptez pas ces conditions, vous devez d&eacute;sinstaller l'application
+                et ne pas l'utiliser.
+            </p>
+            <p>
+                AppBiz Studio se r&eacute;serve le droit de modifier les pr&eacute;sentes CGU &agrave; tout moment.
+                Les modifications prennent effet d&egrave;s leur publication sur le site
+                <a href="https://tryhush.app/terms.html">tryhush.app/terms.html</a>. L'utilisation continu&eacute;e
+                de l'application apr&egrave;s modification vaut acceptation des nouvelles conditions.
+            </p>
+
+            <!-- 3. Description du service -->
+            <h2>3. Description du service</h2>
+            <p>
+                Hush est une application macOS qui corrige automatiquement le texte que vous tapez dans n'importe
+                quel champ de texte de votre Mac. L'application fonctionne comme suit :
+            </p>
+            <ol>
+                <li><strong>D&eacute;tection de la pause</strong> : Hush d&eacute;tecte lorsque vous cessez de taper
+                    (d&eacute;lai configurable).</li>
+                <li><strong>Lecture du texte</strong> : Le contenu du champ de texte actif est lu via l'Accessibility
+                    API de macOS.</li>
+                <li><strong>Correction par IA</strong> : Le texte est envoy&eacute; &agrave; un mod&egrave;le d'intelligence
+                    artificielle (Ministral 3B de Mistral AI, via OpenRouter) pour correction.</li>
+                <li><strong>Remplacement</strong> : Le texte corrig&eacute; remplace automatiquement l'original dans le champ.</li>
+            </ol>
+            <p>
+                L'application propose plusieurs modes : correction orthographique et grammaticale, reformulation,
+                mode personnalis&eacute;. La d&eacute;tection de la langue est automatique (fran&ccedil;ais, anglais et autres langues support&eacute;es).
+            </p>
+
+            <h3>3.1. Pr&eacute;requis techniques</h3>
+            <ul>
+                <li>macOS (version compatible)</li>
+                <li>Autorisation <strong>Accessibilit&eacute;</strong> accord&eacute;e dans les Pr&eacute;f&eacute;rences Syst&egrave;me</li>
+                <li>Connexion internet (pour le mode cloud) ou aucune connexion (futur mode local)</li>
+                <li>Une cl&eacute; API OpenRouter (fournie par l'utilisateur)</li>
+            </ul>
+
+            <!-- 4. Licence d'utilisation -->
+            <h2>4. Licence d'utilisation</h2>
+
+            <h3>4.1. Nature de la licence</h3>
+            <p>
+                L'achat de Hush vous conf&egrave;re une <strong>licence d'utilisation perp&eacute;tuelle, non exclusive
+                et non transf&eacute;rable</strong>. Cette licence vous autorise &agrave; utiliser l'application
+                conform&eacute;ment aux pr&eacute;sentes CGU.
+            </p>
+
+            <h3>4.2. Limitation &agrave; 3 appareils</h3>
+            <p>
+                Chaque licence est utilisable sur un maximum de <strong>3 (trois) appareils Mac</strong> simultan&eacute;ment,
+                identifi&eacute;s par un identifiant mat&eacute;riel unique (hash SHA-256). En cas de changement d'appareil,
+                vous pouvez contacter le support pour d&eacute;sactiver un appareil existant.
+            </p>
+
+            <h3>4.3. Restrictions</h3>
+            <p>Vous vous engagez &agrave; ne pas :</p>
+            <ul>
+                <li>Copier, modifier, d&eacute;compiler, d&eacute;sassembler ou proc&eacute;der &agrave; l'ing&eacute;nierie inverse de l'application.</li>
+                <li>Distribuer, revendre, sous-licencier ou transf&eacute;rer la licence &agrave; un tiers.</li>
+                <li>Contourner ou tenter de contourner les mesures de protection techniques (v&eacute;rification de licence, limitation d'appareils).</li>
+                <li>Utiliser l'application &agrave; des fins ill&eacute;gales ou contraires &agrave; l'ordre public.</li>
+                <li>Utiliser l'application pour g&eacute;n&eacute;rer du contenu illicite, diffamatoire, discriminatoire ou portant atteinte aux droits d'autrui.</li>
+            </ul>
+
+            <!-- 5. Essai gratuit -->
+            <h2>5. P&eacute;riode d'essai gratuit</h2>
+            <p>
+                Hush offre une <strong>p&eacute;riode d'essai gratuite de 7 (sept) jours calendaires</strong> &agrave; compter
+                de la premi&egrave;re installation de l'application sur votre appareil.
+            </p>
+            <p>
+                Pendant cette p&eacute;riode, l'application est pleinement fonctionnelle. Aucun moyen de paiement n'est
+                requis pour d&eacute;marrer l'essai. &Agrave; l'expiration de la p&eacute;riode d'essai, une licence payante
+                est n&eacute;cessaire pour continuer &agrave; utiliser l'application.
+            </p>
+            <p>
+                La p&eacute;riode d'essai est li&eacute;e &agrave; l'appareil et ne peut &ecirc;tre r&eacute;initialis&eacute;e.
+            </p>
+
+            <!-- 6. Prix et paiement -->
+            <h2>6. Prix et paiement</h2>
+
+            <h3>6.1. Tarification</h3>
+            <p>
+                Hush est propos&eacute; au prix de <strong>24,99 &euro; TTC</strong> (paiement unique).
+                Ce prix inclut la licence perp&eacute;tuelle et les mises &agrave; jour futures de l'application.
+            </p>
+            <p>
+                Ce prix ne couvre pas les co&ucirc;ts d'utilisation de l'API OpenRouter, qui sont &agrave; la charge
+                de l'utilisateur et factur&eacute;s directement par OpenRouter selon leur propre grille tarifaire.
+            </p>
+
+            <h3>6.2. Modalit&eacute;s de paiement</h3>
+            <p>
+                Le paiement est trait&eacute; par <strong>Stripe</strong>, prestataire de paiement s&eacute;curis&eacute; conforme
+                PCI DSS Level 1. AppBiz Studio <strong>n'a jamais acc&egrave;s &agrave; vos donn&eacute;es bancaires</strong>
+                (num&eacute;ro de carte, CVV, etc.). Les moyens de paiement accept&eacute;s sont ceux propos&eacute;s par Stripe
+                (carte bancaire, Apple Pay, Google Pay, etc.).
+            </p>
+
+            <h3>6.3. Cl&eacute; API OpenRouter</h3>
+            <p>
+                L'utilisation de Hush n&eacute;cessite une <strong>cl&eacute; API OpenRouter</strong> fournie par l'utilisateur.
+                L'obtention et le co&ucirc;t de cette cl&eacute; rel&egrave;vent de la responsabilit&eacute; de l'utilisateur.
+                Hush stocke cette cl&eacute; <strong>localement sur votre appareil</strong> et ne la transmet qu'aux serveurs
+                OpenRouter pour l'authentification des requ&ecirc;tes de correction.
+            </p>
+
+            <!-- 7. Garantie satisfait ou remboursé -->
+            <h2>7. Garantie satisfait ou rembours&eacute;</h2>
+            <div class="highlight-box">
+                <p>
+                    <strong>Hush offre une garantie satisfait ou rembours&eacute; de 30 jours.</strong>
+                    Si vous n'&ecirc;tes pas satisfait, vous pouvez demander un remboursement int&eacute;gral dans les 30 jours
+                    suivant l'achat, sans justification. Contactez
+                    <a href="mailto:abdoul@appbiz.studio" style="color: #1a5c1a;">abdoul@appbiz.studio</a>
+                    avec votre adresse e-mail d'achat.
+                </p>
+            </div>
+            <p>
+                Le remboursement sera effectu&eacute; via Stripe sur le moyen de paiement utilis&eacute; lors de l'achat,
+                dans un d&eacute;lai de 14 jours ouvr&eacute;s suivant la demande. La licence sera d&eacute;sactiv&eacute;e
+                apr&egrave;s le remboursement.
+            </p>
+
+            <!-- 8. Propriété intellectuelle -->
+            <h2>8. Propri&eacute;t&eacute; intellectuelle</h2>
+            <p>
+                L'application Hush, incluant son code source, son interface, ses ic&ocirc;nes, son nom, son logo et sa documentation,
+                est la propri&eacute;t&eacute; exclusive d'<strong>AppBiz Studio</strong> et est prot&eacute;g&eacute;e par le droit
+                d'auteur et les lois applicables en mati&egrave;re de propri&eacute;t&eacute; intellectuelle.
+            </p>
+            <p>
+                L'achat d'une licence ne conf&egrave;re aucun droit de propri&eacute;t&eacute; sur l'application.
+                Il s'agit exclusivement d'un droit d'utilisation accord&eacute; dans les limites des pr&eacute;sentes CGU.
+            </p>
+            <p>
+                Les textes que vous soumettez &agrave; la correction restent votre propri&eacute;t&eacute;.
+                Hush n'acquiert aucun droit sur vos contenus.
+            </p>
+
+            <!-- 9. Limitation de responsabilité -->
+            <h2>9. Limitation de responsabilit&eacute;</h2>
+
+            <h3>9.1. Nature du service</h3>
+            <p>
+                Hush utilise l'intelligence artificielle pour la correction de texte. Les corrections propos&eacute;es sont
+                g&eacute;n&eacute;r&eacute;es automatiquement par un mod&egrave;le de langage et peuvent contenir des erreurs.
+                L'utilisateur est responsable de la v&eacute;rification du texte corrig&eacute; avant tout usage d&eacute;finitif.
+            </p>
+
+            <div class="info-box">
+                <p>
+                    <strong>Sauvegarde automatique</strong> : &agrave; chaque correction, le texte original est
+                    automatiquement copi&eacute; dans le presse-papiers. Vous pouvez le restaurer &agrave; tout moment
+                    avec Cmd+V.
+                </p>
+            </div>
+
+            <h3>9.2. Exclusions de responsabilit&eacute;</h3>
+            <p>AppBiz Studio ne saurait &ecirc;tre tenu responsable :</p>
+            <ul>
+                <li>Des erreurs ou inexactitudes dans les corrections g&eacute;n&eacute;r&eacute;es par le mod&egrave;le d'IA.</li>
+                <li>Des dommages r&eacute;sultant d'une correction inappropri&eacute;e appliqu&eacute;e sans v&eacute;rification.</li>
+                <li>Des interruptions de service li&eacute;es &agrave; l'API OpenRouter, aux serveurs de Mistral AI ou &agrave; votre connexion internet.</li>
+                <li>De la perte de donn&eacute;es r&eacute;sultant d'un dysfonctionnement du syst&egrave;me d'exploitation ou de l'application.</li>
+                <li>Des co&ucirc;ts d'utilisation de l'API OpenRouter.</li>
+                <li>De l'utilisation de l'application en violation des pr&eacute;sentes CGU.</li>
+            </ul>
+
+            <h3>9.3. Plafond d'indemnisation</h3>
+            <p>
+                En tout &eacute;tat de cause, la responsabilit&eacute; totale d'AppBiz Studio au titre des pr&eacute;sentes CGU
+                est limit&eacute;e au montant effectivement pay&eacute; par l'utilisateur pour la licence (24,99 &euro;).
+            </p>
+
+            <!-- 10. Disponibilité du service -->
+            <h2>10. Disponibilit&eacute; du service</h2>
+            <p>
+                Hush fonctionne localement sur votre Mac. L'application elle-m&ecirc;me est disponible &agrave; tout moment,
+                ind&eacute;pendamment de toute connexion internet.
+            </p>
+            <p>
+                Le service de correction par IA n&eacute;cessite une connexion internet et d&eacute;pend de la disponibilit&eacute;
+                des services tiers (OpenRouter, Mistral AI). AppBiz Studio ne garantit pas une disponibilit&eacute; continue
+                de ces services tiers.
+            </p>
+            <p>
+                Le serveur de licences est h&eacute;berg&eacute; sur Cloudflare Workers et b&eacute;n&eacute;ficie d'une haute disponibilit&eacute;.
+                Une p&eacute;riode de gr&acirc;ce de <strong>7 jours</strong> est accord&eacute;e en cas d'indisponibilit&eacute;
+                du serveur de licences, pendant laquelle l'application continue de fonctionner normalement.
+            </p>
+
+            <!-- 11. Données personnelles -->
+            <h2>11. Donn&eacute;es personnelles</h2>
+            <p>
+                Le traitement des donn&eacute;es personnelles dans le cadre de l'utilisation de Hush est d&eacute;crit dans
+                notre <a href="privacy.html"><strong>Politique de Confidentialit&eacute;</strong></a>, qui fait partie
+                int&eacute;grante des pr&eacute;sentes CGU.
+            </p>
+            <p>
+                En r&eacute;sum&eacute; : Hush ne stocke aucun texte, n'utilise aucun cookie, ne pratique aucun tracking
+                et ne collecte que les donn&eacute;es strictement n&eacute;cessaires &agrave; la gestion des licences
+                (identifiant mat&eacute;riel hash&eacute;, adresse e-mail).
+            </p>
+
+            <!-- 12. Résiliation -->
+            <h2>12. R&eacute;siliation</h2>
+
+            <h3>12.1. Par l'utilisateur</h3>
+            <p>
+                Vous pouvez cesser d'utiliser Hush &agrave; tout moment en d&eacute;sinstallant l'application.
+                Votre licence reste valide et vous pouvez r&eacute;installer l'application ult&eacute;rieurement.
+            </p>
+            <p>
+                Pour demander la suppression de vos donn&eacute;es du serveur de licences, contactez
+                <a href="mailto:abdoul@appbiz.studio">abdoul@appbiz.studio</a>.
+            </p>
+
+            <h3>12.2. Par AppBiz Studio</h3>
+            <p>
+                AppBiz Studio se r&eacute;serve le droit de r&eacute;voquer une licence en cas de :
+            </p>
+            <ul>
+                <li>Violation des pr&eacute;sentes CGU, notamment les restrictions d'utilisation (article 4.3).</li>
+                <li>Fraude av&eacute;r&eacute;e (contournement des protections, piratage).</li>
+                <li>Utilisation abusive mettant en danger l'int&eacute;grit&eacute; du service.</li>
+            </ul>
+            <p>
+                En cas de r&eacute;vocation pour violation des CGU, aucun remboursement ne sera accord&eacute;.
+            </p>
+
+            <!-- 13. Force majeure -->
+            <h2>13. Force majeure</h2>
+            <p>
+                AppBiz Studio ne saurait &ecirc;tre tenu responsable de l'inex&eacute;cution de ses obligations en cas de
+                force majeure au sens de l'article 1218 du Code civil fran&ccedil;ais, incluant notamment :
+                catastrophe naturelle, pand&eacute;mie, guerre, d&eacute;cision gouvernementale, panne g&eacute;n&eacute;ralis&eacute;e
+                d'internet, d&eacute;faillance d'un prestataire tiers essentiel.
+            </p>
+
+            <!-- 14. Droit applicable et juridiction -->
+            <h2>14. Droit applicable et juridiction comp&eacute;tente</h2>
+            <p>
+                Les pr&eacute;sentes CGU sont r&eacute;gies par le <strong>droit fran&ccedil;ais</strong>.
+            </p>
+            <p>
+                En cas de litige relatif &agrave; l'interpr&eacute;tation ou &agrave; l'ex&eacute;cution des pr&eacute;sentes,
+                les parties s'engagent &agrave; rechercher une solution amiable avant toute action judiciaire.
+            </p>
+            <p>
+                Conform&eacute;ment aux articles L. 611-1 et suivants du Code de la consommation, vous pouvez recourir
+                gratuitement au service de m&eacute;diation de la consommation. &Agrave; d&eacute;faut de r&eacute;solution amiable,
+                le litige sera soumis aux <strong>tribunaux fran&ccedil;ais comp&eacute;tents</strong>.
+            </p>
+
+            <!-- 15. Droit de rétractation -->
+            <h2>15. Droit de r&eacute;tractation</h2>
+            <p>
+                Conform&eacute;ment &agrave; l'article L. 221-28 du Code de la consommation, le droit de r&eacute;tractation
+                ne s'applique pas aux contrats de fourniture de contenu num&eacute;rique non fourni sur un support mat&eacute;riel
+                dont l'ex&eacute;cution a commenc&eacute; avec l'accord du consommateur.
+            </p>
+            <p>
+                N&eacute;anmoins, AppBiz Studio offre volontairement une <strong>garantie satisfait ou rembours&eacute; de
+                30 jours</strong> (voir article 7), allant au-del&agrave; des obligations l&eacute;gales.
+            </p>
+
+            <!-- 16. Divisibilité -->
+            <h2>16. Divisibilit&eacute;</h2>
+            <p>
+                Si une ou plusieurs stipulations des pr&eacute;sentes CGU &eacute;taient d&eacute;clar&eacute;es nulles ou
+                inapplicables par un tribunal comp&eacute;tent, les autres stipulations demeureraient en vigueur et
+                produiraient leurs pleins effets.
+            </p>
+
+            <!-- 17. Intégralité -->
+            <h2>17. Int&eacute;gralit&eacute; de l'accord</h2>
+            <p>
+                Les pr&eacute;sentes CGU, compl&eacute;t&eacute;es par la
+                <a href="privacy.html">Politique de Confidentialit&eacute;</a>, constituent l'int&eacute;gralit&eacute;
+                de l'accord entre l'utilisateur et AppBiz Studio concernant l'utilisation de Hush.
+                Elles remplacent tout accord ant&eacute;rieur portant sur le m&ecirc;me objet.
+            </p>
+
+            <!-- 18. Contact -->
+            <h2>18. Contact</h2>
+            <p>
+                Pour toute question relative aux pr&eacute;sentes CGU :
+            </p>
+            <p>
+                <strong>AppBiz Studio</strong><br>
+                E-mail : <a href="mailto:abdoul@appbiz.studio">abdoul@appbiz.studio</a><br>
+                Site web : <a href="https://tryhush.app" target="_blank" rel="noopener">tryhush.app</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="legal-footer">
+        <p>
+            <a href="https://tryhush.app">Accueil</a>
+            <a href="privacy.html">Confidentialit&eacute;</a>
+            <a href="terms.html">CGU</a>
+        </p>
+        <p style="margin-top: 12px;">&copy; 2026 AppBiz Studio. Tous droits r&eacute;serv&eacute;s.</p>
+    </div>
+
+</body>
+</html>

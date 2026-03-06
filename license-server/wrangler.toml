@@ -1,0 +1,19 @@
+name = "hush-license"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+routes = [
+  { pattern = "api.tryhush.app/*", zone_name = "tryhush.app" }
+]
+
+workers_dev = true
+
+[vars]
+STRIPE_CHECKOUT_URL = "https://buy.stripe.com/14AaEW2M46j9dkb88HbEA03"
+MAX_DEVICES = 3
+TRIAL_DAYS = 7
+
+[[kv_namespaces]]
+binding = "LICENSES"
+id = "fe8fee669e584315977368accfcd352d"
+preview_id = "c77b165656cd427f9765bbffade3d39c"
