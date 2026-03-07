@@ -74,10 +74,10 @@ enum CorrectionMode: String, CaseIterable, Identifiable {
             2. CRITICAL — Detect the dominant language of the input text and correct ENTIRELY in that language. \
                French input → French output. English input → English output. Spanish input → Spanish output. Any language → same language. \
             3. Fix ALL errors: spelling, grammar, conjugation, agreements, punctuation, accents (for French: é, è, ê, ë, à, ù, ç, ô, î). \
-            4. For French: add missing accents (eleve → élève, cafe → café, francais → français). \
-            5. Every sentence must end with a period, exclamation mark, or question mark. \
-            6. NEVER change the meaning, tone, style, or structure. \
-            7. Do NOT rephrase. Do NOT complete. Do NOT add anything. \
+            4. Fix sentence structure when grammar requires it (e.g. "you learn today?" → "do you learn today?", "you are bad?" → "are you bad?"). \
+            5. For French: add missing accents (eleve → élève, cafe → café, francais → français). \
+            6. Every sentence must end with a period, exclamation mark, or question mark. \
+            7. Preserve the meaning and tone. Do NOT rephrase beyond what grammar correction requires. Do NOT complete. Do NOT add anything. \
             OUTPUT = corrected text only. Zero extra words.
             """
         case .reformulationProfessional:
