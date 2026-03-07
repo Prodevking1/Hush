@@ -225,31 +225,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        // Licence
-        let licenseTitle: String
-        switch licenseManager.licenseState {
-        case .valid:
-            licenseTitle = "Licence: Active"
-        case .trial(let daysLeft):
-            licenseTitle = "Essai: \(daysLeft) jour\(daysLeft > 1 ? "s" : "") restant\(daysLeft > 1 ? "s" : "")"
-        case .expired:
-            licenseTitle = "Licence: Expir\u{00e9}e"
-        case .unlicensed:
-            licenseTitle = "Licence: Non activ\u{00e9}e"
-        case .unknown:
-            licenseTitle = "Licence: V\u{00e9}rification..."
-        }
-
-        let licenseItem = NSMenuItem(
-            title: licenseTitle,
-            action: #selector(openSettings),
-            keyEquivalent: "l"
-        )
-        licenseItem.target = self
-        menu.addItem(licenseItem)
-
-        menu.addItem(NSMenuItem.separator())
-
         // Param\u{00e8}tres
         let paramItem = NSMenuItem(
             title: "Param\u{00e8}tres...",
@@ -258,24 +233,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
         paramItem.target = self
         menu.addItem(paramItem)
-
-        // Reset license (dev)
-        let resetItem = NSMenuItem(
-            title: "R\u{00e9}initialiser la licence",
-            action: #selector(resetLicenseData),
-            keyEquivalent: ""
-        )
-        resetItem.target = self
-        menu.addItem(resetItem)
-
-        // Expire trial (dev)
-        let expireItem = NSMenuItem(
-            title: "Terminer l\u{2019}essai (dev)",
-            action: #selector(expireTrialNow),
-            keyEquivalent: ""
-        )
-        expireItem.target = self
-        menu.addItem(expireItem)
 
         menu.addItem(NSMenuItem.separator())
 

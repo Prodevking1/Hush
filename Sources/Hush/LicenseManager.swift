@@ -185,7 +185,9 @@ final class LicenseManager: ObservableObject {
         // Ensure install date exists (first Keychain access — only after onboarding)
         ensureInstallDate()
         // Check for stored JWT
-        guard let jwt = KeychainHelper.readString(key: Self.keychainJWT) else {
+        let jwtRead = KeychainHelper.readString(key: Self.keychainJWT)
+        Log.info("JWT from Keychain: \(jwtRead != nil ? "found (\(jwtRead!.prefix(20))...)" : "NOT FOUND")")
+        guard let jwt = jwtRead else {
             // No JWT — check trial
             let daysLeft = computeTrialDaysLeft()
             if daysLeft > 0 {
@@ -324,16 +326,18 @@ final class LicenseManager: ObservableObject {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(jwt)", forHTTPHeaderField: "Authorization")
         request.timeoutInterval = 10
 
-        let body: [String: String] = ["hardware_id": hwId]
+        let body: [String: String] = ["token": jwt, "hardware_id": hwId]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
         do {
-            let (_, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse else { return false }
-            return httpResponse.statusCode == 200
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else { return false }
+            guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let valid = json["valid"] as? Bool else { return false }
+            return valid
         } catch {
             Log.warn("Online validation failed: \(error.localizedDescription)")
             return false
